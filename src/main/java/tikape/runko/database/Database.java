@@ -9,7 +9,8 @@ public class Database {
     private Connection conn;
     private boolean debug;
 
-    public Database(String databaseAddress) throws ClassNotFoundException {
+    public Database(String driver, String databaseAddress) throws ClassNotFoundException {
+        Class.forName(driver);
         this.databaseAddress = databaseAddress;
     }
 
@@ -54,6 +55,36 @@ public class Database {
                 + " vastausId integer,"
                 + " FOREIGN KEY(ketju) REFERENCES Ketju(id));");
 
+        lista.add("INSERT INTO Aihe (nimi) VALUES ('A');");
+        lista.add("INSERT INTO Aihe (nimi) VALUES ('B');");
+        lista.add("INSERT INTO Aihe (nimi) VALUES ('C');");
+        lista.add("INSERT INTO Aihe (nimi) VALUES ('D');");
+        lista.add("INSERT INTO Aihe (nimi) VALUES ('E');");
+        lista.add("INSERT INTO Aihe (nimi) VALUES ('F');");
+        lista.add("INSERT INTO Aihe (nimi) VALUES ('G');");
+        lista.add("INSERT INTO Aihe (nimi) VALUES ('H');");
+        lista.add("INSERT INTO Aihe (nimi) VALUES ('I');");
+        lista.add("INSERT INTO Aihe (nimi) VALUES ('J');");
+        lista.add("INSERT INTO Aihe (nimi) VALUES ('K');");
+        lista.add("INSERT INTO Aihe (nimi) VALUES ('L');");
+
+        lista.add("INSERT INTO Ketju (aihe, otsikko) "
+                + "VALUES (1, 'a');");
+        lista.add("INSERT INTO Ketju (aihe, otsikko) "
+                + "VALUES (1, 'b');");
+        lista.add("INSERT INTO Ketju (aihe, otsikko) "
+                + "VALUES (1, 'c');");
+        lista.add("INSERT INTO Ketju (aihe, otsikko) "
+                + "VALUES (1, 'd');");
+        lista.add("INSERT INTO Ketju (aihe, otsikko) "
+                + "VALUES (1, 'e');");
+        lista.add("INSERT INTO Ketju (aihe, otsikko) "
+                + "VALUES (6, 'f');");
+        lista.add("INSERT INTO Ketju (aihe, otsikko) "
+                + "VALUES (6, 'g');");
+        lista.add("INSERT INTO Ketju (aihe, otsikko) "
+                + "VALUES (8, 'h');");
+
         return lista;
     }
 
@@ -67,6 +98,7 @@ public class Database {
 
         List<T> rows = new ArrayList<>();
         PreparedStatement stmt = conn.prepareStatement(query);
+
         for (int i = 0; i < params.length; i++) {
             stmt.setObject(i + 1, params[i]);
         }
