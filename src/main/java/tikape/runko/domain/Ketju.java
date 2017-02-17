@@ -5,18 +5,18 @@ import java.util.ArrayList;
 public class Ketju {
 
     private int id;
-    private Aihe aihe;
+    private int aihe;
     private String otsikko;
     private ArrayList<Viesti> viestit;
 
-    public Ketju(int id, Aihe aihe, String otsikko) {
+    public Ketju(int id, int aihe, String otsikko) {
         this.id = id;
         this.aihe = aihe;
         this.otsikko = otsikko;
         viestit = new ArrayList<>();
     }
 
-    public Aihe getAihe() {
+    public int getAihe() {
         return aihe;
     }
 

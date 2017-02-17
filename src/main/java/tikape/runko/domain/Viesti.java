@@ -4,14 +4,15 @@ import java.sql.Timestamp;
 
 public class Viesti {
 
-    private Ketju ketju;
+    private int ketju;
     private Timestamp aika;
     private int id;
     private String nimimerkki;
     private String sisalto;
     private int vastausId;
 
-    public Viesti(Ketju ketju, Timestamp aika, int id, String nimimerkki, String sisalto, int vastausId) {
+    public Viesti(int ketju, Timestamp aika, int id, String nimimerkki,
+            String sisalto, int vastausId) {
         this.ketju = ketju;
         this.aika = aika;
         this.id = id;
@@ -28,7 +29,7 @@ public class Viesti {
         return id;
     }
 
-    public Ketju getKetju() {
+    public int getKetju() {
         return ketju;
     }
 
