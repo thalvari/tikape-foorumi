@@ -35,4 +35,9 @@ public class Ketju {
     public void lisaaViesti(Viesti viesti) {
         viestit.add(viesti);
     }
+
+    @Override
+    public String toString() {
+        return id + "|" + aihe + "|" + otsikko;
+    }
 }

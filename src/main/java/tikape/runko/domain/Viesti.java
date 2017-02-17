@@ -44,4 +44,10 @@ public class Viesti {
     public int getVastausId() {
         return vastausId;
     }
+
+    @Override
+    public String toString() {
+        return ketju + "|" + aika + "|" + id + "|"
+                + nimimerkki + "|" + sisalto + "|" + vastausId;
+    }
 }

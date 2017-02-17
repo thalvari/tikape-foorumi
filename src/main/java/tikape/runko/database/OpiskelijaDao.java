@@ -71,4 +71,9 @@ public class OpiskelijaDao implements Dao<Opiskelija, Integer> {
     public void save(Opiskelija element) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public List<Opiskelija> findAll(int key) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

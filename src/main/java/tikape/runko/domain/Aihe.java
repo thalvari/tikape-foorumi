@@ -29,4 +29,9 @@ public class Aihe {
     public void lisaaKetju(Ketju ketju) {
         ketjut.add(ketju);
     }
+
+    @Override
+    public String toString() {
+        return id + "|" + nimi;
+    }
 }

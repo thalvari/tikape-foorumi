@@ -14,9 +14,12 @@ public class KetjuDao implements Dao<Ketju, Integer> {
     }
 
     @Override
-    public List<Ketju> findAll() throws SQLException {
-        return this.database.queryAndCollect("SELECT * FROM Ketju",
-                new KetjuCollector());
+    public List<Ketju> findAll(int aihe) throws SQLException {
+        return this.database.queryAndCollect(
+                "SELECT K.id, K.aihe, K.otsikko "
+                + "FROM Aihe A, Ketju K WHERE A.id = K.aihe "
+                + "AND A.id = ?",
+                new KetjuCollector(), aihe);
     }
 
     @Override
@@ -27,5 +30,10 @@ public class KetjuDao implements Dao<Ketju, Integer> {
     @Override
     public void save(Ketju element) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public List<Ketju> findAll() throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

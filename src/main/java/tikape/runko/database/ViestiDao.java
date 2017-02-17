@@ -28,4 +28,9 @@ public class ViestiDao implements Dao<Viesti, Integer> {
     public void save(Viesti element) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+    @Override
+    public List<Viesti> findAll(int key) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

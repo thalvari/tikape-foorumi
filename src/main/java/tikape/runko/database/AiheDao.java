@@ -28,4 +28,9 @@ public class AiheDao implements Dao<Aihe, Integer> {
     public void save(Aihe element) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+    @Override
+    public List<Aihe> findAll(int key) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
