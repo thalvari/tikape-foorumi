@@ -1,16 +1,18 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-
     <head>
-        <title>Otsikko</title>
+        <title>Foorumi</title>
         <meta charset="utf-8" />
     </head>
-
     <body>
-        <h1>Heippa vaan!</h1>
+        <h1>Foorumi</h1>
+        <h2>Aiheet</h2>
 
-        <p>Ja .. <span th:text="${viesti}">jotain?</span></p>
-
-        <p><a href="/opiskelijat">Tästä opiskelijalistaukseen.</a></p>
+        <ul>
+            <li th:each="aihe: ${aiheet}">
+                <a th:href="@{~/aihe/{id}(id=${aihe.id})}"
+                   th:text="${aihe.nimi}"></a>
+            </li>
+        </ul>
     </body>
 </html>

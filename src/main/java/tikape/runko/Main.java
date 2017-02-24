@@ -1,12 +1,16 @@
 package tikape.runko;
 
+import java.util.HashMap;
 import java.util.List;
+import spark.ModelAndView;
+import static spark.Spark.get;
+import spark.template.thymeleaf.ThymeleafTemplateEngine;
 import tikape.runko.database.AiheDao;
 import tikape.runko.database.Database;
 import tikape.runko.database.KetjuDao;
 import tikape.runko.database.ViestiDao;
 import tikape.runko.domain.Aihe;
-import tikape.runko.domain.Ketju;
+import tikape.runko.domain.Viesti;
 
 public class Main {
 
@@ -22,10 +26,23 @@ public class Main {
 //        for (Aihe aihe : aiheet) {
 //            System.out.println(aihe);
 //        }
-        List<Ketju> ketjut = ketjuDao.findAll(1);
-        for (Ketju ketju : ketjut) {
-            System.out.println(ketju);
-        }
+//        List<Ketju> ketjut = ketjuDao.findAll(1);
+//        for (Ketju ketju : ketjut) {
+//            System.out.println(ketju);
+//        }
+        get("/", (req, res) -> {
+            HashMap map = new HashMap<>();
+            List<Aihe> aiheet = aiheDao.findAll();
+            map.put("aiheet", aiheet);
+            for (Aihe aihe : aiheet) {
+                List<Viesti> viestit = viestiDao.findAll(aihe.getId());
+                for (Viesti viesti : viestit) {
+                    System.out.println(viesti);
+                }
+                map.put(aihe.getId(), viestit);
+            }
+            return new ModelAndView(map, "index");
+        }, new ThymeleafTemplateEngine());
 
 //        OpiskelijaDao opiskelijaDao = new OpiskelijaDao(database);
 //

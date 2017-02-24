@@ -34,6 +34,7 @@ public class KetjuDao implements Dao<Ketju, Integer> {
 
     @Override
     public List<Ketju> findAll() throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.database.queryAndCollect("SELECT * FROM Ketju",
+                new KetjuCollector());
     }
 }
