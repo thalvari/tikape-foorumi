@@ -21,7 +21,13 @@ public class AiheDao implements Dao<Aihe, Integer> {
 
     @Override
     public Aihe findOne(Integer key) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        List<Aihe> aiheet = this.database.queryAndCollect("SELECT * FROM Aihe "
+                + "WHERE id = ?", new AiheCollector(), key);
+        if (aiheet == null) {
+            return null;
+        } else {
+            return aiheet.get(0);
+        }
     }
 
     @Override
@@ -30,7 +36,17 @@ public class AiheDao implements Dao<Aihe, Integer> {
     }
 
     @Override
-    public List<Aihe> findAll(int key) throws SQLException {
+    public List<Aihe> findAll(Integer key) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Aihe findViimeisinAihe(Integer key) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Aihe findViimeisinKetju(Integer key) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

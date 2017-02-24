@@ -10,6 +10,7 @@ import tikape.runko.database.Database;
 import tikape.runko.database.KetjuDao;
 import tikape.runko.database.ViestiDao;
 import tikape.runko.domain.Aihe;
+import tikape.runko.domain.Ketju;
 import tikape.runko.domain.Viesti;
 
 public class Main {
@@ -22,26 +23,33 @@ public class Main {
         KetjuDao ketjuDao = new KetjuDao(database);
         ViestiDao viestiDao = new ViestiDao(database);
 
-//        List<Aihe> aiheet = aiheDao.findAll();
-//        for (Aihe aihe : aiheet) {
-//            System.out.println(aihe);
-//        }
-//        List<Ketju> ketjut = ketjuDao.findAll(1);
-//        for (Ketju ketju : ketjut) {
-//            System.out.println(ketju);
-//        }
         get("/", (req, res) -> {
             HashMap map = new HashMap<>();
             List<Aihe> aiheet = aiheDao.findAll();
-            map.put("aiheet", aiheet);
             for (Aihe aihe : aiheet) {
-                List<Viesti> viestit = viestiDao.findAll(aihe.getId());
-                for (Viesti viesti : viestit) {
-                    System.out.println(viesti);
+                Viesti viesti = viestiDao.findViimeisinAihe(aihe.getId());
+                if (viesti != null) {
+                    aihe.setViimeisin(viesti.getAika());
                 }
-                map.put(aihe.getId(), viestit);
             }
+            map.put("aiheet", aiheet);
             return new ModelAndView(map, "index");
+        }, new ThymeleafTemplateEngine());
+
+        get("/aihe/:id", (req, res) -> {
+            HashMap map = new HashMap<>();
+            List<Ketju> ketjut = ketjuDao.findAll(Integer.parseInt(
+                    req.params("id")));
+            for (Ketju ketju : ketjut) {
+                Viesti viesti = viestiDao.findViimeisinKetju(ketju.getId());
+                if (viesti != null) {
+                    ketju.setViimeisin(viesti.getAika());
+                }
+            }
+            map.put("ketjut", ketjut);
+            map.put("aihe", aiheDao.findOne(Integer.parseInt(
+                    req.params("id"))));
+            return new ModelAndView(map, "aihe");
         }, new ThymeleafTemplateEngine());
 
 //        OpiskelijaDao opiskelijaDao = new OpiskelijaDao(database);

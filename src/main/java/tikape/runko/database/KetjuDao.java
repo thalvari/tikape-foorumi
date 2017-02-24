@@ -14,17 +14,22 @@ public class KetjuDao implements Dao<Ketju, Integer> {
     }
 
     @Override
-    public List<Ketju> findAll(int aihe) throws SQLException {
+    public List<Ketju> findAll(Integer key) throws SQLException {
         return this.database.queryAndCollect(
-                "SELECT K.id, K.aihe, K.otsikko "
-                + "FROM Aihe A, Ketju K WHERE A.id = K.aihe "
-                + "AND A.id = ?",
-                new KetjuCollector(), aihe);
+                "SELECT * FROM Ketju K WHERE K.aihe = ?", new KetjuCollector(),
+                key);
     }
 
     @Override
     public Ketju findOne(Integer key) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        List<Ketju> ketjut = this.database.queryAndCollect(
+                "SELECT * FROM Ketju WHERE id = ?", new KetjuCollector(),
+                key);
+        if (ketjut == null) {
+            return null;
+        } else {
+            return ketjut.get(0);
+        }
     }
 
     @Override
@@ -36,5 +41,15 @@ public class KetjuDao implements Dao<Ketju, Integer> {
     public List<Ketju> findAll() throws SQLException {
         return this.database.queryAndCollect("SELECT * FROM Ketju",
                 new KetjuCollector());
+    }
+
+    @Override
+    public Ketju findViimeisinAihe(Integer key) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Ketju findViimeisinKetju(Integer key) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

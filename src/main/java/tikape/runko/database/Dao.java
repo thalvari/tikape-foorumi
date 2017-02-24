@@ -2,6 +2,7 @@ package tikape.runko.database;
 
 import java.sql.*;
 import java.util.*;
+import tikape.runko.domain.Viesti;
 
 public interface Dao<T, K> {
 
@@ -9,7 +10,11 @@ public interface Dao<T, K> {
 
     List<T> findAll() throws SQLException;
 
-    List<T> findAll(int id) throws SQLException;
+    List<T> findAll(K key) throws SQLException;
 
     void save(T element) throws SQLException;
+
+    public T findViimeisinAihe(K key) throws SQLException;
+    
+    public T findViimeisinKetju(K key) throws SQLException;
 }

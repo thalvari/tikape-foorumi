@@ -2,6 +2,7 @@ package tikape.runko.database;
 
 import java.sql.*;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class Database {
 
@@ -85,32 +86,50 @@ public class Database {
         lista.add("INSERT INTO Ketju (aihe, otsikko) "
                 + "VALUES (8, 'h');");
 
-        System.out.println(new Timestamp(System.currentTimeMillis()).toString());
         lista.add("INSERT INTO Viesti (ketju, aika, id, nimimerkki, sisalto, "
                 + "vastausId) VALUES (1, '"
                 + new Timestamp(System.currentTimeMillis()).toString()
                 + "', 1, 'käyttäjä', 'tekstiä', 0)");
+        try {
+            TimeUnit.MILLISECONDS.sleep(1);
+        } catch (Exception e) {
+        }
         lista.add("INSERT INTO Viesti (ketju, aika, id, nimimerkki, sisalto, "
                 + "vastausId) VALUES (1, '"
                 + new Timestamp(System.currentTimeMillis()).toString()
                 + "', 2, 'käyttäjä', 'tekstiä', 0)");
+        try {
+            TimeUnit.MILLISECONDS.sleep(1);
+        } catch (Exception e) {
+        }
         lista.add("INSERT INTO Viesti (ketju, aika, id, nimimerkki, sisalto, "
-                + "vastausId) VALUES (1, '"
+                + "vastausId) VALUES (3, '"
                 + new Timestamp(System.currentTimeMillis()).toString()
                 + "', 3, 'käyttäjä', 'tekstiä', 0)");
+        try {
+            TimeUnit.MILLISECONDS.sleep(1);
+        } catch (Exception e) {
+        }
         lista.add("INSERT INTO Viesti (ketju, aika, id, nimimerkki, sisalto, "
-                + "vastausId) VALUES (1, '"
+                + "vastausId) VALUES (3, '"
                 + new Timestamp(System.currentTimeMillis()).toString()
                 + "', 4, 'käyttäjä', 'tekstiä', 0)");
+        try {
+            TimeUnit.MILLISECONDS.sleep(1);
+        } catch (Exception e) {
+        }
         lista.add("INSERT INTO Viesti (ketju, aika, id, nimimerkki, sisalto, "
-                + "vastausId) VALUES (1, '"
+                + "vastausId) VALUES (6, '"
                 + new Timestamp(System.currentTimeMillis()).toString()
                 + "', 5, 'käyttäjä', 'tekstiä', 0)");
+        try {
+            TimeUnit.MILLISECONDS.sleep(1);
+        } catch (Exception e) {
+        }
         lista.add("INSERT INTO Viesti (ketju, aika, id, nimimerkki, sisalto, "
-                + "vastausId) VALUES (1, '"
+                + "vastausId) VALUES (8, '"
                 + new Timestamp(System.currentTimeMillis()).toString()
                 + "', 6, 'käyttäjä', 'tekstiä', 0)");
-        lista.add("INSERT INTO Viesti (ketju, aika, id, nimimerkki, sisalto, vastausId) VALUES (1, '2017-02-24 12:11:05', 7, 'käyttäjä', 'tekstiä', 0");
 
         return lista;
     }

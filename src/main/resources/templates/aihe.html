@@ -5,15 +5,15 @@
         <meta charset="utf-8" />
     </head>
     <body>
-        <h1>Foorumi</h1>
-        <h2>Aiheet</h2>
+        <h1>Aihe</h1>
+        <h2 th:text="${aihe.nimi}"></h2>
 
         <ul style="list-style-type:none">
-            <li th:each="aihe: ${aiheet}">
-                <a th:href="@{~/aihe/{id}(id=${aihe.id})}"
-                   th:text="${aihe.nimi}"></a>
+            <li th:each="ketju: ${ketjut}">
+                <a th:href="@{~/ketju/{id}(id=${ketju.id})}"
+                   th:text="${ketju.otsikko}"></a>
                 <i>viimeisin viesti: </i>
-                <i th:text="${aihe.viimeisin != null} ? ${aihe.viimeisin}"></i>
+                <i th:text="${ketju.viimeisin != null} ? ${ketju.viimeisin}"></i>
             </li>
         </ul>
     </body>

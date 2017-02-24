@@ -1,11 +1,12 @@
 package tikape.runko.domain;
 
-import java.util.ArrayList;
+import java.sql.Timestamp;
 
 public class Aihe {
 
     private int id;
     private String nimi;
+    private Timestamp viimeisin;
 
     public Aihe(int id, String nimi) {
         this.id = id;
@@ -23,5 +24,13 @@ public class Aihe {
     @Override
     public String toString() {
         return id + "|" + nimi;
+    }
+
+    public Timestamp getViimeisin() {
+        return viimeisin;
+    }
+
+    public void setViimeisin(Timestamp viimeisin) {
+        this.viimeisin = viimeisin;
     }
 }

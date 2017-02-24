@@ -20,8 +20,29 @@ public class ViestiDao implements Dao<Viesti, Integer> {
     }
 
     @Override
-    public Viesti findOne(Integer key) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public Viesti findViimeisinAihe(Integer key) throws SQLException {
+        List<Viesti> viestit = this.database.queryAndCollect("SELECT * FROM Aihe A, Ketju K, "
+                + "Viesti V WHERE A.id = ? AND A.id = K.aihe "
+                + "AND K.id = V.ketju ORDER BY V.aika DESC",
+                new ViestiCollector(), key);
+        if (viestit.isEmpty()) {
+            return null;
+        } else {
+            return viestit.get(0);
+        }
+    }
+
+    @Override
+    public Viesti findViimeisinKetju(Integer key) throws SQLException {
+        List<Viesti> viestit = this.database.queryAndCollect("SELECT * FROM Ketju K, "
+                + "Viesti V WHERE K.id = ? AND K.id = V.ketju "
+                + "ORDER BY V.aika DESC",
+                new ViestiCollector(), key);
+        if (viestit.isEmpty()) {
+            return null;
+        } else {
+            return viestit.get(0);
+        }
     }
 
     @Override
@@ -30,10 +51,15 @@ public class ViestiDao implements Dao<Viesti, Integer> {
     }
 
     @Override
-    public List<Viesti> findAll(int aihe) throws SQLException {
+    public List<Viesti> findAll(Integer aihe) throws SQLException {
         return this.database.queryAndCollect("SELECT * FROM Aihe A, Ketju K, "
                 + "Viesti V WHERE A.id = ? AND A.id = K.aihe "
-                + "AND K.id = V.ketju;",
+                + "AND K.id = V.ketju ORDER BY V.aika DESC",
                 new ViestiCollector(), aihe);
+    }
+
+    @Override
+    public Viesti findOne(Integer key) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
