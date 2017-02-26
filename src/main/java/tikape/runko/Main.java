@@ -26,7 +26,7 @@ public class Main {
         KetjuDao ketjuDao = new KetjuDao(database);
         ViestiDao viestiDao = new ViestiDao(database);
 
-//        alustaTestausLauseet(database);F
+        alustaTestausLauseet(database);
 
         get("/", (req, res) -> {
             HashMap map = new HashMap<>();
