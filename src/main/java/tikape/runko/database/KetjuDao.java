@@ -17,7 +17,8 @@ public class KetjuDao implements Dao<Ketju, String> {
 
     @Override
     public List<Ketju> findAll() throws SQLException {
-        return database.queryAndCollect("SELECT * FROM Ketju",
+        return database.queryAndCollect("SELECT * FROM Ketju "
+                + "ORDER BY ketjuMuokattu DESC",
                 rs -> new Ketju(
                         rs.getInt("ketjuId"),
                         new Aihe(
@@ -68,7 +69,8 @@ public class KetjuDao implements Dao<Ketju, String> {
 
     public List<Ketju> findBy(Aihe aihe) throws SQLException {
         return database.queryAndCollect(
-                "SELECT * FROM Ketju WHERE ketjuAihe = ?",
+                "SELECT * FROM Ketju WHERE ketjuAihe = ? "
+                + "ORDER BY ketjuMuokattu DESC",
                 rs -> new Ketju(
                         rs.getInt("ketjuId"),
                         new Aihe(

@@ -14,7 +14,8 @@ public class AiheDao implements Dao<Aihe, String> {
 
     @Override
     public List<Aihe> findAll() throws SQLException {
-        return database.queryAndCollect("SELECT * FROM Aihe",
+        return database.queryAndCollect("SELECT * FROM Aihe "
+                + "ORDER BY aiheMuokattu DESC",
                 rs -> new Aihe(
                         rs.getInt("aiheId"),
                         rs.getString("aiheNimi"),

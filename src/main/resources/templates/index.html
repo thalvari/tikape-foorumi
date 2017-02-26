@@ -1,20 +1,33 @@
-<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
         <title>Foorumi</title>
-        <meta charset="utf-8" />
+        <meta charset="utf-8"/>
+        <style>
+            table, th, td {
+                border: 1px solid black;
+            }
+            th, td {
+                padding: 5px;
+                text-align: left;
+            }
+        </style>
     </head>
     <body>
         <h1>Foorumi</h1>
         <h2>Aiheet</h2>
-
-        <ul style="list-style-type:none">
-            <li th:each="aihe: ${aiheet}">
-                <a th:href="@{~/aihe/{aiheId}(aiheId=${aihe.aiheId})}"
-                   th:text="${aihe.aiheNimi}"></a>
-                <i>muokattu: </i>
-                <i th:text="${aihe.aiheMuokattu}"></i>
-            </li>
-        </ul>
+        <table>
+            <tr>
+                <th>nimi</th>
+                <th>muokattu</th>
+            </tr>
+            <tr th:each="aihe: ${aiheet}">
+                <td>
+                    <a th:href="@{~/aihe/{aiheId}(aiheId=${aihe.aiheId})}"
+                       th:text="${aihe.aiheNimi}"></a>
+                </td>
+                <td th:text="${aihe.aiheMuokattu}"></td>
+            </tr>
+        </table>
     </body>
 </html>

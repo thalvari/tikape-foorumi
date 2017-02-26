@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Ketju</title>
+        <meta charset="utf-8"/>
+    </head>
+    <body>
+        <h1>Ketju</h1>
+        <h2 th:text="${ketju.ketjuOtsikko}"></h2>
+        <table>
+            <tr th:each="viesti: ${viestit}">
+                <td th:text="${viesti.viestiAika}"></td>
+                <td th:text="${viesti.viestiSisalto}"></td>
+                <td th:text="${viesti.viestiNimimerkki}"></td>
+            </tr>
+        </table>
+        <p>
+            <a th:href="@{~/aihe/{aiheId}(aiheId=${aihe.aiheId})}"
+               th:text="takaisin"></a>
+        </p>
+    </body>
+</html>
