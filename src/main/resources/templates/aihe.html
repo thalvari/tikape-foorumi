@@ -10,10 +10,10 @@
 
         <ul style="list-style-type:none">
             <li th:each="ketju: ${ketjut}">
-                <a th:href="@{~/ketju/{id}(id=${ketju.id})}"
-                   th:text="${ketju.otsikko}"></a>
-                <i>viimeisin viesti: </i>
-                <i th:text="${ketju.viimeisin != null} ? ${ketju.viimeisin}"></i>
+                <a th:href="@{~/ketju/{ketjuId}(id=${ketju.ketjuId})}"
+                   th:text="${ketju.ketjuOtsikko}"></a>
+                <i>muokattu: </i>
+                <i th:text="${ketju.ketjuMuokattu}"></i>
             </li>
         </ul>
     </body>

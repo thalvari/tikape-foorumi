@@ -4,33 +4,42 @@ import java.sql.Timestamp;
 
 public class Aihe {
 
-    private int id;
-    private String nimi;
-    private Timestamp viimeisin;
+    private int aiheId;
+    private String aiheNimi;
+    private Timestamp aiheMuokattu;
 
-    public Aihe(int id, String nimi) {
-        this.id = id;
-        this.nimi = nimi;
+    public Aihe(int aiheId, String aiheNimi, Timestamp aiheMuokattu) {
+        this.aiheId = aiheId;
+        this.aiheNimi = aiheNimi;
+        this.aiheMuokattu = aiheMuokattu;
     }
 
-    public int getId() {
-        return id;
+    public int getAiheId() {
+        return aiheId;
     }
 
-    public String getNimi() {
-        return nimi;
+    public void setAiheId(int aiheId) {
+        this.aiheId = aiheId;
+    }
+
+    public Timestamp getAiheMuokattu() {
+        return aiheMuokattu;
+    }
+
+    public void setAiheMuokattu(Timestamp aiheMuokattu) {
+        this.aiheMuokattu = aiheMuokattu;
+    }
+
+    public String getAiheNimi() {
+        return aiheNimi;
+    }
+
+    public void setAiheNimi(String aiheNimi) {
+        this.aiheNimi = aiheNimi;
     }
 
     @Override
     public String toString() {
-        return id + "|" + nimi;
-    }
-
-    public Timestamp getViimeisin() {
-        return viimeisin;
-    }
-
-    public void setViimeisin(Timestamp viimeisin) {
-        this.viimeisin = viimeisin;
+        return aiheId + "|" + aiheMuokattu + "|" + aiheNimi;
     }
 }

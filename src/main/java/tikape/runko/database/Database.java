@@ -2,155 +2,68 @@ package tikape.runko.database;
 
 import java.sql.*;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 public class Database {
 
-    private String databaseAddress;
-    private Connection conn;
+    private String address;
     private boolean debug;
 
-    public Database(String driver, String databaseAddress) throws ClassNotFoundException {
+    public Database(String driver, String address) throws ClassNotFoundException {
         Class.forName(driver);
-        this.databaseAddress = databaseAddress;
+        this.address = address;
     }
 
     public Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(databaseAddress);
+        return DriverManager.getConnection(address);
     }
 
     public void init() {
-        List<String> lauseet = sqliteLauseet();
-
-        // "try with resources" sulkee resurssin automaattisesti lopuksi
+        List<String> lauseet = createTableLauseet();
         try {
-            conn = getConnection();
-            Statement st = conn.createStatement();
-
-            // suoritetaan komennot
             for (String lause : lauseet) {
-                System.out.println("Running command >> " + lause);
-                st.executeUpdate(lause);
+                update(lause);
             }
-
-        } catch (Throwable t) {
-            // jos tietokantataulu on jo olemassa, ei komentoja suoriteta
-            System.out.println("Error >> " + t.getMessage());
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
         }
     }
 
-    private List<String> sqliteLauseet() {
+    private List<String> createTableLauseet() {
         ArrayList<String> lista = new ArrayList<>();
-
-        lista.add("CREATE TABLE Aihe (id integer PRIMARY KEY,"
-                + " nimi varchar(255) NOT NULL);");
-        lista.add("CREATE TABLE Ketju (id integer PRIMARY KEY,"
-                + " aihe integer NOT NULL,"
-                + " otsikko varchar(255) NOT NULL,"
-                + " FOREIGN KEY(aihe) REFERENCES Aihe(id));");
-        lista.add("CREATE TABLE Viesti (ketju integer NOT NULL,"
-                + " aika timestamp NOT NULL,"
-                + " id integer NOT NULL,"
-                + " nimimerkki varchar(255) NOT NULL,"
-                + " sisalto varchar(2000) NOT NULL,"
-                + " vastausId integer,"
-                + " FOREIGN KEY(ketju) REFERENCES Ketju(id));");
-
-        lista.add("INSERT INTO Aihe (nimi) VALUES ('A');");
-        lista.add("INSERT INTO Aihe (nimi) VALUES ('B');");
-        lista.add("INSERT INTO Aihe (nimi) VALUES ('C');");
-        lista.add("INSERT INTO Aihe (nimi) VALUES ('D');");
-        lista.add("INSERT INTO Aihe (nimi) VALUES ('E');");
-        lista.add("INSERT INTO Aihe (nimi) VALUES ('F');");
-        lista.add("INSERT INTO Aihe (nimi) VALUES ('G');");
-        lista.add("INSERT INTO Aihe (nimi) VALUES ('H');");
-        lista.add("INSERT INTO Aihe (nimi) VALUES ('I');");
-        lista.add("INSERT INTO Aihe (nimi) VALUES ('J');");
-        lista.add("INSERT INTO Aihe (nimi) VALUES ('K');");
-        lista.add("INSERT INTO Aihe (nimi) VALUES ('L');");
-
-        lista.add("INSERT INTO Ketju (aihe, otsikko) "
-                + "VALUES (1, 'a');");
-        lista.add("INSERT INTO Ketju (aihe, otsikko) "
-                + "VALUES (1, 'b');");
-        lista.add("INSERT INTO Ketju (aihe, otsikko) "
-                + "VALUES (1, 'c');");
-        lista.add("INSERT INTO Ketju (aihe, otsikko) "
-                + "VALUES (1, 'd');");
-        lista.add("INSERT INTO Ketju (aihe, otsikko) "
-                + "VALUES (1, 'e');");
-        lista.add("INSERT INTO Ketju (aihe, otsikko) "
-                + "VALUES (6, 'f');");
-        lista.add("INSERT INTO Ketju (aihe, otsikko) "
-                + "VALUES (6, 'g');");
-        lista.add("INSERT INTO Ketju (aihe, otsikko) "
-                + "VALUES (8, 'h');");
-
-        lista.add("INSERT INTO Viesti (ketju, aika, id, nimimerkki, sisalto, "
-                + "vastausId) VALUES (1, '"
-                + new Timestamp(System.currentTimeMillis()).toString()
-                + "', 1, 'käyttäjä', 'tekstiä', 0)");
-        try {
-            TimeUnit.MILLISECONDS.sleep(1);
-        } catch (Exception e) {
-        }
-        lista.add("INSERT INTO Viesti (ketju, aika, id, nimimerkki, sisalto, "
-                + "vastausId) VALUES (1, '"
-                + new Timestamp(System.currentTimeMillis()).toString()
-                + "', 2, 'käyttäjä', 'tekstiä', 0)");
-        try {
-            TimeUnit.MILLISECONDS.sleep(1);
-        } catch (Exception e) {
-        }
-        lista.add("INSERT INTO Viesti (ketju, aika, id, nimimerkki, sisalto, "
-                + "vastausId) VALUES (3, '"
-                + new Timestamp(System.currentTimeMillis()).toString()
-                + "', 3, 'käyttäjä', 'tekstiä', 0)");
-        try {
-            TimeUnit.MILLISECONDS.sleep(1);
-        } catch (Exception e) {
-        }
-        lista.add("INSERT INTO Viesti (ketju, aika, id, nimimerkki, sisalto, "
-                + "vastausId) VALUES (3, '"
-                + new Timestamp(System.currentTimeMillis()).toString()
-                + "', 4, 'käyttäjä', 'tekstiä', 0)");
-        try {
-            TimeUnit.MILLISECONDS.sleep(1);
-        } catch (Exception e) {
-        }
-        lista.add("INSERT INTO Viesti (ketju, aika, id, nimimerkki, sisalto, "
-                + "vastausId) VALUES (6, '"
-                + new Timestamp(System.currentTimeMillis()).toString()
-                + "', 5, 'käyttäjä', 'tekstiä', 0)");
-        try {
-            TimeUnit.MILLISECONDS.sleep(1);
-        } catch (Exception e) {
-        }
-        lista.add("INSERT INTO Viesti (ketju, aika, id, nimimerkki, sisalto, "
-                + "vastausId) VALUES (8, '"
-                + new Timestamp(System.currentTimeMillis()).toString()
-                + "', 6, 'käyttäjä', 'tekstiä', 0)");
-
+        lista.add("CREATE TABLE Aihe ("
+                + "aiheId integer PRIMARY KEY, "
+                + "aiheMuokattu timestamp NOT NULL, "
+                + "aiheNimi varchar(255) NOT NULL)");
+        lista.add("CREATE TABLE Ketju ("
+                + "ketjuId integer PRIMARY KEY, "
+                + "ketjuAihe integer NOT NULL, "
+                + "ketjuMuokattu timestamp NOT NULL, "
+                + "ketjuOtsikko varchar(255) NOT NULL, "
+                + "FOREIGN KEY(ketjuAihe) REFERENCES Aihe(aiheId))");
+        lista.add("CREATE TABLE Viesti ("
+                + "viestiId integer PRIMARY KEY, "
+                + "viestiKetju integer NOT NULL, "
+                + "viestiAika timestamp NOT NULL, "
+                + "viestiNimimerkki varchar(255) NOT NULL, "
+                + "viestiSisalto varchar(2000) NOT NULL, "
+                + "FOREIGN KEY(viestiKetju) REFERENCES Ketju(ketjuId))");
         return lista;
     }
 
-    public <T> List<T> queryAndCollect(String query,
-            Collector<T> col, Object... params) throws SQLException {
+    public <T> List<T> queryAndCollect(String query, Collector<T> col,
+            Object... params) throws SQLException {
+        Connection conn = getConnection();
         if (debug) {
             System.out.println("---");
             System.out.println("Executing: " + query);
             System.out.println("---");
         }
-
         List<T> rows = new ArrayList<>();
         PreparedStatement stmt = conn.prepareStatement(query);
-
         for (int i = 0; i < params.length; i++) {
             stmt.setObject(i + 1, params[i]);
         }
-
         ResultSet rs = stmt.executeQuery();
-
         while (rs.next()) {
             if (debug) {
                 System.out.println("---");
@@ -158,12 +71,11 @@ public class Database {
                 debug(rs);
                 System.out.println("---");
             }
-
             rows.add(col.collect(rs));
         }
-
         rs.close();
         stmt.close();
+        conn.close();
         return rows;
     }
 
@@ -178,20 +90,16 @@ public class Database {
                     rs.getObject(i + 1) + ":"
                     + rs.getMetaData().getColumnName(i + 1) + "  ");
         }
-
         System.out.println();
     }
 
-    public int update(String updateQuery, Object... params)
-            throws SQLException {
+    public int update(String updateQuery, Object... params) throws SQLException {
+        Connection conn = getConnection();
         PreparedStatement stmt = conn.prepareStatement(updateQuery);
-
         for (int i = 0; i < params.length; i++) {
             stmt.setObject(i + 1, params[i]);
         }
-
         int changes = stmt.executeUpdate();
-
         if (debug) {
             System.out.println("---");
             System.out.println(updateQuery);
@@ -199,7 +107,7 @@ public class Database {
             System.out.println("---");
         }
         stmt.close();
-
+        conn.close();
         return changes;
     }
 }

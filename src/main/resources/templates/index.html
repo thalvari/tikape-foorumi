@@ -10,10 +10,10 @@
 
         <ul style="list-style-type:none">
             <li th:each="aihe: ${aiheet}">
-                <a th:href="@{~/aihe/{id}(id=${aihe.id})}"
-                   th:text="${aihe.nimi}"></a>
-                <i>viimeisin viesti: </i>
-                <i th:text="${aihe.viimeisin != null} ? ${aihe.viimeisin}"></i>
+                <a th:href="@{~/aihe/{aiheId}(id=${aihe.aiheId})}"
+                   th:text="${aihe.aiheNimi}"></a>
+                <i>muokattu: </i>
+                <i th:text="${aihe.aiheMuokattu}"></i>
             </li>
         </ul>
     </body>

@@ -1,43 +1,56 @@
 package tikape.runko.domain;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 
 public class Ketju {
 
-    private int id;
-    private int aihe;
-    private String otsikko;
-    private Timestamp viimeisin;
+    private int ketjuId;
+    private Aihe ketjuAihe;
+    private Timestamp ketjuMuokattu;
+    private String ketjuOtsikko;
 
-    public Ketju(int id, int aihe, String otsikko) {
-        this.id = id;
-        this.aihe = aihe;
-        this.otsikko = otsikko;
+    public Ketju(int ketjuId, Aihe ketjuAihe, Timestamp ketjuMuokattu,
+            String ketjuOtsikko) {
+        this.ketjuId = ketjuId;
+        this.ketjuAihe = ketjuAihe;
+        this.ketjuMuokattu = ketjuMuokattu;
+        this.ketjuOtsikko = ketjuOtsikko;
     }
 
-    public int getAihe() {
-        return aihe;
+    public Aihe getKetjuAihe() {
+        return ketjuAihe;
     }
 
-    public int getId() {
-        return id;
+    public void setKetjuAihe(Aihe ketjuAihe) {
+        this.ketjuAihe = ketjuAihe;
     }
 
-    public String getOtsikko() {
-        return otsikko;
+    public int getKetjuId() {
+        return ketjuId;
+    }
+
+    public void setKetjuId(int ketjuId) {
+        this.ketjuId = ketjuId;
+    }
+
+    public Timestamp getKetjuMuokattu() {
+        return ketjuMuokattu;
+    }
+
+    public void setKetjuMuokattu(Timestamp ketjuMuokattu) {
+        this.ketjuMuokattu = ketjuMuokattu;
+    }
+
+    public String getKetjuOtsikko() {
+        return ketjuOtsikko;
+    }
+
+    public void setKetjuOtsikko(String ketjuOtsikko) {
+        this.ketjuOtsikko = ketjuOtsikko;
     }
 
     @Override
     public String toString() {
-        return id + "|" + aihe + "|" + otsikko;
-    }
-
-    public Timestamp getViimeisin() {
-        return viimeisin;
-    }
-
-    public void setViimeisin(Timestamp viimeisin) {
-        this.viimeisin = viimeisin;
+        return ketjuId + "|" + ketjuMuokattu + "|" + ketjuOtsikko;
     }
 }

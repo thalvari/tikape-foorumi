@@ -2,47 +2,31 @@ package tikape.runko.database;
 
 import java.sql.SQLException;
 import java.util.List;
-import tikape.runko.database.collector.ViestiCollector;
+import tikape.runko.domain.Ketju;
 import tikape.runko.domain.Viesti;
 
-public class ViestiDao implements Dao<Viesti, Integer> {
+public class ViestiDao implements Dao<Viesti, String> {
 
     private Database database;
+    private KetjuDao ketjuDao;
 
     public ViestiDao(Database database) {
         this.database = database;
+        ketjuDao = new KetjuDao(database);
     }
 
     @Override
     public List<Viesti> findAll() throws SQLException {
         return this.database.queryAndCollect("SELECT * FROM Viesti",
-                new ViestiCollector());
-    }
-
-    @Override
-    public Viesti findViimeisinAihe(Integer key) throws SQLException {
-        List<Viesti> viestit = this.database.queryAndCollect("SELECT * FROM Aihe A, Ketju K, "
-                + "Viesti V WHERE A.id = ? AND A.id = K.aihe "
-                + "AND K.id = V.ketju ORDER BY V.aika DESC",
-                new ViestiCollector(), key);
-        if (viestit.isEmpty()) {
-            return null;
-        } else {
-            return viestit.get(0);
-        }
-    }
-
-    @Override
-    public Viesti findViimeisinKetju(Integer key) throws SQLException {
-        List<Viesti> viestit = this.database.queryAndCollect("SELECT * FROM Ketju K, "
-                + "Viesti V WHERE K.id = ? AND K.id = V.ketju "
-                + "ORDER BY V.aika DESC",
-                new ViestiCollector(), key);
-        if (viestit.isEmpty()) {
-            return null;
-        } else {
-            return viestit.get(0);
-        }
+                rs -> new Viesti(
+                        rs.getInt("viestiId"),
+                        new Ketju(rs.getInt("viestiKetju"),
+                                ketjuDao.findOne(rs.getString("viestiKetju")).getKetjuAihe(),
+                                ketjuDao.findOne(rs.getString("viestiKetju")).getKetjuMuokattu(),
+                                ketjuDao.findOne(rs.getString("viestiKetju")).getKetjuOtsikko()),
+                        rs.getTimestamp("viestiAika"),
+                        rs.getString("viestiNimimerkki"),
+                        rs.getString("viestiSisalto")));
     }
 
     @Override
@@ -51,15 +35,22 @@ public class ViestiDao implements Dao<Viesti, Integer> {
     }
 
     @Override
-    public List<Viesti> findAll(Integer aihe) throws SQLException {
-        return this.database.queryAndCollect("SELECT * FROM Aihe A, Ketju K, "
-                + "Viesti V WHERE A.id = ? AND A.id = K.aihe "
-                + "AND K.id = V.ketju ORDER BY V.aika DESC",
-                new ViestiCollector(), aihe);
+    public Viesti findOne(String key) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    @Override
-    public Viesti findOne(Integer key) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<Viesti> findBy(Ketju ketju) throws SQLException {
+        return this.database.queryAndCollect(
+                "SELECT * FROM Ketju K, Viesti V WHERE K.id = V.ketju AND K.id = ?",
+                rs -> new Viesti(
+                        rs.getInt("viestiId"),
+                        new Ketju(rs.getInt("viestiKetju"),
+                                ketjuDao.findOne(rs.getString("viestiKetju")).getKetjuAihe(),
+                                ketjuDao.findOne(rs.getString("viestiKetju")).getKetjuMuokattu(),
+                                ketjuDao.findOne(rs.getString("viestiKetju")).getKetjuOtsikko()),
+                        rs.getTimestamp("viestiAika"),
+                        rs.getString("viestiNimimerkki"),
+                        rs.getString("viestiSisalto")),
+                ketju.getKetjuId());
     }
 }

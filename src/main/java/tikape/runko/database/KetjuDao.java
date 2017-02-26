@@ -2,28 +2,31 @@ package tikape.runko.database;
 
 import java.sql.SQLException;
 import java.util.List;
-import tikape.runko.database.collector.KetjuCollector;
+import tikape.runko.domain.Aihe;
 import tikape.runko.domain.Ketju;
 
-public class KetjuDao implements Dao<Ketju, Integer> {
+public class KetjuDao implements Dao<Ketju, String> {
 
     private Database database;
+    private AiheDao aiheDao;
 
     public KetjuDao(Database database) {
         this.database = database;
+        aiheDao = new AiheDao(database);
     }
 
     @Override
-    public List<Ketju> findAll(Integer key) throws SQLException {
-        return this.database.queryAndCollect(
-                "SELECT * FROM Ketju K WHERE K.aihe = ?", new KetjuCollector(),
-                key);
-    }
-
-    @Override
-    public Ketju findOne(Integer key) throws SQLException {
-        List<Ketju> ketjut = this.database.queryAndCollect(
-                "SELECT * FROM Ketju WHERE id = ?", new KetjuCollector(),
+    public Ketju findOne(String key) throws SQLException {
+        List<Ketju> ketjut = database.queryAndCollect(
+                "SELECT * FROM Ketju WHERE id = ?",
+                rs -> new Ketju(
+                        rs.getInt("ketjuId"),
+                        new Aihe(
+                                rs.getInt("ketjuAihe"),
+                                aiheDao.findOne(rs.getString("ketjuAihe")).getAiheNimi(),
+                                aiheDao.findOne(rs.getString("ketjuAihe")).getAiheMuokattu()),
+                        rs.getTimestamp("ketjuMuokattu"),
+                        rs.getString("ketjuOtsikko")),
                 key);
         if (ketjut == null) {
             return null;
@@ -33,23 +36,41 @@ public class KetjuDao implements Dao<Ketju, Integer> {
     }
 
     @Override
-    public void save(Ketju element) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void save(Ketju ketju) throws SQLException {
+        database.update("INSERT "
+                + "INTO Ketju (ketjuAihe, ketjuMuokattu, ketjuOtsikko) "
+                + "VALUES (?, ?, ?)",
+                ketju.getKetjuAihe().getAiheId(),
+                ketju.getKetjuMuokattu(),
+                ketju.getKetjuOtsikko());
     }
 
     @Override
     public List<Ketju> findAll() throws SQLException {
-        return this.database.queryAndCollect("SELECT * FROM Ketju",
-                new KetjuCollector());
+        return database.queryAndCollect(
+                "SELECT * FROM Ketju",
+                rs -> new Ketju(
+                        rs.getInt("ketjuId"),
+                        new Aihe(
+                                rs.getInt("ketjuAihe"),
+                                aiheDao.findOne(rs.getString("ketjuAihe")).getAiheNimi(),
+                                aiheDao.findOne(rs.getString("ketjuAihe")).getAiheMuokattu()),
+                        rs.getTimestamp("ketjuMuokattu"),
+                        rs.getString("ketjuOtsikko")));
+
     }
 
-    @Override
-    public Ketju findViimeisinAihe(Integer key) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Ketju findViimeisinKetju(Integer key) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<Ketju> findBy(Aihe aihe) throws SQLException {
+        return database.queryAndCollect(
+                "SELECT * FROM Aihe A, Ketju K WHERE A.id = K.aihe AND A.id = ?",
+                rs -> new Ketju(
+                        rs.getInt("ketjuId"),
+                        new Aihe(
+                                rs.getInt("ketjuAihe"),
+                                aiheDao.findOne(rs.getString("ketjuAihe")).getAiheNimi(),
+                                aiheDao.findOne(rs.getString("ketjuAihe")).getAiheMuokattu()),
+                        rs.getTimestamp("ketjuMuokattu"),
+                        rs.getString("ketjuOtsikko")),
+                aihe.getAiheId());
     }
 }

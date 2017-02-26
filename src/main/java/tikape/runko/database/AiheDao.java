@@ -2,10 +2,9 @@ package tikape.runko.database;
 
 import java.sql.SQLException;
 import java.util.List;
-import tikape.runko.database.collector.AiheCollector;
 import tikape.runko.domain.Aihe;
 
-public class AiheDao implements Dao<Aihe, Integer> {
+public class AiheDao implements Dao<Aihe, String> {
 
     private Database database;
 
@@ -15,14 +14,23 @@ public class AiheDao implements Dao<Aihe, Integer> {
 
     @Override
     public List<Aihe> findAll() throws SQLException {
-        return this.database.queryAndCollect("SELECT * FROM Aihe",
-                new AiheCollector());
+        return database.queryAndCollect(
+                "SELECT * FROM Aihe",
+                rs -> new Aihe(
+                        rs.getInt("aiheId"),
+                        rs.getString("aiheNimi"),
+                        rs.getTimestamp("aiheMuokattu")));
     }
 
     @Override
-    public Aihe findOne(Integer key) throws SQLException {
-        List<Aihe> aiheet = this.database.queryAndCollect("SELECT * FROM Aihe "
-                + "WHERE id = ?", new AiheCollector(), key);
+    public Aihe findOne(String key) throws SQLException {
+        List<Aihe> aiheet = database.queryAndCollect(
+                "SELECT * FROM Aihe WHERE id = ?",
+                rs -> new Aihe(
+                        rs.getInt("aiheId"),
+                        rs.getString("aiheNimi"),
+                        rs.getTimestamp("aiheMuokattu")),
+                key);
         if (aiheet == null) {
             return null;
         } else {
@@ -31,22 +39,8 @@ public class AiheDao implements Dao<Aihe, Integer> {
     }
 
     @Override
-    public void save(Aihe element) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public List<Aihe> findAll(Integer key) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public Aihe findViimeisinAihe(Integer key) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Aihe findViimeisinKetju(Integer key) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void save(Aihe aihe) throws SQLException {
+        database.update("INSERT INTO Aihe (aiheMuokattu, aiheNimi) "
+                + "VALUES (?, ?)", aihe.getAiheMuokattu(), aihe.getAiheNimi());
     }
 }

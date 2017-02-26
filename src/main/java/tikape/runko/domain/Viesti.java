@@ -4,50 +4,64 @@ import java.sql.Timestamp;
 
 public class Viesti {
 
-    private int ketju;
-    private Timestamp aika;
-    private int id;
-    private String nimimerkki;
-    private String sisalto;
-    private int vastausId;
+    private int viestiId;
+    private Ketju viestiKetju;
+    private Timestamp viestiAika;
+    private String viestiNimimerkki;
+    private String viestiSisalto;
 
-    public Viesti(int ketju, Timestamp aika, int id, String nimimerkki,
-            String sisalto, int vastausId) {
-        this.ketju = ketju;
-        this.aika = aika;
-        this.id = id;
-        this.nimimerkki = nimimerkki;
-        this.sisalto = sisalto;
-        this.vastausId = vastausId;
+    public Viesti(int viestiId, Ketju viestiKetju, Timestamp viestiAika,
+            String viestiNimimerkki, String viestiSisalto) {
+        this.viestiId = viestiId;
+        this.viestiKetju = viestiKetju;
+        this.viestiAika = viestiAika;
+        this.viestiNimimerkki = viestiNimimerkki;
+        this.viestiSisalto = viestiSisalto;
     }
 
-    public Timestamp getAika() {
-        return aika;
+    public Timestamp getViestiAika() {
+        return viestiAika;
     }
 
-    public int getId() {
-        return id;
+    public void setViestiAika(Timestamp viestiAika) {
+        this.viestiAika = viestiAika;
     }
 
-    public int getKetju() {
-        return ketju;
+    public int getViestiId() {
+        return viestiId;
     }
 
-    public String getNimimerkki() {
-        return nimimerkki;
+    public void setViestiId(int viestiId) {
+        this.viestiId = viestiId;
     }
 
-    public String getSisalto() {
-        return sisalto;
+    public Ketju getViestiKetju() {
+        return viestiKetju;
     }
 
-    public int getVastausId() {
-        return vastausId;
+    public void setViestiKetju(Ketju viestiKetju) {
+        this.viestiKetju = viestiKetju;
+    }
+
+    public String getViestiNimimerkki() {
+        return viestiNimimerkki;
+    }
+
+    public void setViestiNimimerkki(String viestiNimimerkki) {
+        this.viestiNimimerkki = viestiNimimerkki;
+    }
+
+    public String getViestiSisalto() {
+        return viestiSisalto;
+    }
+
+    public void setViestiSisalto(String viestiSisalto) {
+        this.viestiSisalto = viestiSisalto;
     }
 
     @Override
     public String toString() {
-        return ketju + "|" + aika + "|" + id + "|"
-                + nimimerkki + "|" + sisalto + "|" + vastausId;
+        return viestiId + "|" + viestiAika + "|" + viestiNimimerkki + "|"
+                + viestiSisalto;
     }
 }
