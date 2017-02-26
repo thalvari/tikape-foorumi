@@ -14,8 +14,7 @@ public class AiheDao implements Dao<Aihe, String> {
 
     @Override
     public List<Aihe> findAll() throws SQLException {
-        return database.queryAndCollect(
-                "SELECT * FROM Aihe",
+        return database.queryAndCollect("SELECT * FROM Aihe",
                 rs -> new Aihe(
                         rs.getInt("aiheId"),
                         rs.getString("aiheNimi"),
@@ -24,8 +23,8 @@ public class AiheDao implements Dao<Aihe, String> {
 
     @Override
     public Aihe findOne(String key) throws SQLException {
-        List<Aihe> aiheet = database.queryAndCollect(
-                "SELECT * FROM Aihe WHERE id = ?",
+        List<Aihe> aiheet = database.queryAndCollect("SELECT * FROM Aihe "
+                + "WHERE aiheId = ?",
                 rs -> new Aihe(
                         rs.getInt("aiheId"),
                         rs.getString("aiheNimi"),
@@ -41,6 +40,8 @@ public class AiheDao implements Dao<Aihe, String> {
     @Override
     public void save(Aihe aihe) throws SQLException {
         database.update("INSERT INTO Aihe (aiheMuokattu, aiheNimi) "
-                + "VALUES (?, ?)", aihe.getAiheMuokattu(), aihe.getAiheNimi());
+                + "VALUES (?, ?)",
+                aihe.getAiheMuokattu(),
+                aihe.getAiheNimi());
     }
 }

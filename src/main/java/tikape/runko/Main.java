@@ -14,7 +14,6 @@ import tikape.runko.database.KetjuDao;
 import tikape.runko.database.ViestiDao;
 import tikape.runko.domain.Aihe;
 import tikape.runko.domain.Ketju;
-import tikape.runko.domain.Viesti;
 
 public class Main {
 
@@ -22,6 +21,7 @@ public class Main {
         Database database = new Database("org.sqlite.JDBC", "jdbc:sqlite:foorumi.db");
         database.setDebugMode(true);
         database.init();
+
         AiheDao aiheDao = new AiheDao(database);
         KetjuDao ketjuDao = new KetjuDao(database);
         ViestiDao viestiDao = new ViestiDao(database);
@@ -31,53 +31,18 @@ public class Main {
         get("/", (req, res) -> {
             HashMap map = new HashMap<>();
             List<Aihe> aiheet = aiheDao.findAll();
-//            for (Aihe aihe : aiheet) {
-//                Viesti viesti = viestiDao.findViimeisinAihe(aihe.getId());
-//                if (viesti != null) {
-//                    aihe.setViimeisin(viesti.getAika());
-//                }
-//            }
             map.put("aiheet", aiheet);
             return new ModelAndView(map, "index");
         }, new ThymeleafTemplateEngine());
 
-//        get("/aihe/:id", (req, res) -> {
-//            HashMap map = new HashMap<>();
-//            Aihe aihe = aiheDao.findOne(":id");
-//            List<Ketju> ketjut = ketjuDao.findBy(aihe);
-//            for (Ketju ketju : ketjut) {
-//                Viesti viesti = viestiDao.findViimeisinKetju(ketju.getId());
-//                if (viesti != null) {
-//                    ketju.setViimeisin(viesti.getAika());
-//                }
-//            }
-//            map.put("aihe", aihe);
-//            map.put("ketjut", ketjut);
-//            return new ModelAndView(map, "aihe");
-//        }, new ThymeleafTemplateEngine());
-//        OpiskelijaDao opiskelijaDao = new OpiskelijaDao(database);
-//
-//        get("/", (req, res) -> {
-//            HashMap map = new HashMap<>();
-//            map.put("viesti", "tervehdys");
-//
-//            return new ModelAndView(map, "index");
-//        }, new ThymeleafTemplateEngine());
-//
-//        get("/opiskelijat", (req, res) -> {
-//            HashMap map = new HashMap<>();
-//            map.put("opiskelijat", opiskelijaDao.findAll());
-//
-//            return new ModelAndView(map, "opiskelijat");
-//        }, new ThymeleafTemplateEngine());
-//
-//        get("/opiskelijat/:id", (req, res) -> {
-//            HashMap map = new HashMap<>();
-//            map.put("opiskelija", opiskelijaDao.findOne(
-//                    Integer.parseInt(req.params("id"))));
-//
-//            return new ModelAndView(map, "opiskelija");
-//        }, new ThymeleafTemplateEngine());
+        get("/aihe/:id", (req, res) -> {
+            HashMap map = new HashMap<>();
+            Aihe aihe = aiheDao.findOne(":id");
+            List<Ketju> ketjut = ketjuDao.findBy(aihe);
+            map.put("aihe", aihe);
+            map.put("ketjut", ketjut);
+            return new ModelAndView(map, "aihe");
+        }, new ThymeleafTemplateEngine());
     }
 
     private static void alustaTestausLauseet(Database database)

@@ -21,17 +21,15 @@ public class ViestiDao implements Dao<Viesti, String> {
                 rs -> new Viesti(
                         rs.getInt("viestiId"),
                         new Ketju(rs.getInt("viestiKetju"),
-                                ketjuDao.findOne(rs.getString("viestiKetju")).getKetjuAihe(),
-                                ketjuDao.findOne(rs.getString("viestiKetju")).getKetjuMuokattu(),
-                                ketjuDao.findOne(rs.getString("viestiKetju")).getKetjuOtsikko()),
+                                ketjuDao.findOne(rs.getString("viestiKetju"))
+                                .getKetjuAihe(),
+                                ketjuDao.findOne(rs.getString("viestiKetju"))
+                                .getKetjuMuokattu(),
+                                ketjuDao.findOne(rs.getString("viestiKetju"))
+                                .getKetjuOtsikko()),
                         rs.getTimestamp("viestiAika"),
                         rs.getString("viestiNimimerkki"),
                         rs.getString("viestiSisalto")));
-    }
-
-    @Override
-    public void save(Viesti element) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
@@ -39,15 +37,23 @@ public class ViestiDao implements Dao<Viesti, String> {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
+    public void save(Viesti element) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
     public List<Viesti> findBy(Ketju ketju) throws SQLException {
-        return this.database.queryAndCollect(
-                "SELECT * FROM Ketju K, Viesti V WHERE K.id = V.ketju AND K.id = ?",
+        return this.database.queryAndCollect("SELECT * FROM Ketju K, Viesti V "
+                + "WHERE K.ketjuId = V.viestiKetju AND K.ketjuId = ?",
                 rs -> new Viesti(
                         rs.getInt("viestiId"),
                         new Ketju(rs.getInt("viestiKetju"),
-                                ketjuDao.findOne(rs.getString("viestiKetju")).getKetjuAihe(),
-                                ketjuDao.findOne(rs.getString("viestiKetju")).getKetjuMuokattu(),
-                                ketjuDao.findOne(rs.getString("viestiKetju")).getKetjuOtsikko()),
+                                ketjuDao.findOne(rs.getString("viestiKetju"))
+                                .getKetjuAihe(),
+                                ketjuDao.findOne(rs.getString("viestiKetju"))
+                                .getKetjuMuokattu(),
+                                ketjuDao.findOne(rs.getString("viestiKetju"))
+                                .getKetjuOtsikko()),
                         rs.getTimestamp("viestiAika"),
                         rs.getString("viestiNimimerkki"),
                         rs.getString("viestiSisalto")),

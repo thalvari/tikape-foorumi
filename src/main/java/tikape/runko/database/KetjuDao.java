@@ -16,15 +16,33 @@ public class KetjuDao implements Dao<Ketju, String> {
     }
 
     @Override
-    public Ketju findOne(String key) throws SQLException {
-        List<Ketju> ketjut = database.queryAndCollect(
-                "SELECT * FROM Ketju WHERE id = ?",
+    public List<Ketju> findAll() throws SQLException {
+        return database.queryAndCollect("SELECT * FROM Ketju",
                 rs -> new Ketju(
                         rs.getInt("ketjuId"),
                         new Aihe(
                                 rs.getInt("ketjuAihe"),
-                                aiheDao.findOne(rs.getString("ketjuAihe")).getAiheNimi(),
-                                aiheDao.findOne(rs.getString("ketjuAihe")).getAiheMuokattu()),
+                                aiheDao.findOne(rs.getString("ketjuAihe"))
+                                .getAiheNimi(),
+                                aiheDao.findOne(rs.getString("ketjuAihe"))
+                                .getAiheMuokattu()),
+                        rs.getTimestamp("ketjuMuokattu"),
+                        rs.getString("ketjuOtsikko")));
+
+    }
+
+    @Override
+    public Ketju findOne(String key) throws SQLException {
+        List<Ketju> ketjut = database.queryAndCollect(
+                "SELECT * FROM Ketju WHERE ketjuId = ?",
+                rs -> new Ketju(
+                        rs.getInt("ketjuId"),
+                        new Aihe(
+                                rs.getInt("ketjuAihe"),
+                                aiheDao.findOne(rs.getString("ketjuAihe"))
+                                .getAiheNimi(),
+                                aiheDao.findOne(rs.getString("ketjuAihe"))
+                                .getAiheMuokattu()),
                         rs.getTimestamp("ketjuMuokattu"),
                         rs.getString("ketjuOtsikko")),
                 key);
@@ -43,32 +61,23 @@ public class KetjuDao implements Dao<Ketju, String> {
                 ketju.getKetjuAihe().getAiheId(),
                 ketju.getKetjuMuokattu(),
                 ketju.getKetjuOtsikko());
-    }
-
-    @Override
-    public List<Ketju> findAll() throws SQLException {
-        return database.queryAndCollect(
-                "SELECT * FROM Ketju",
-                rs -> new Ketju(
-                        rs.getInt("ketjuId"),
-                        new Aihe(
-                                rs.getInt("ketjuAihe"),
-                                aiheDao.findOne(rs.getString("ketjuAihe")).getAiheNimi(),
-                                aiheDao.findOne(rs.getString("ketjuAihe")).getAiheMuokattu()),
-                        rs.getTimestamp("ketjuMuokattu"),
-                        rs.getString("ketjuOtsikko")));
-
+        database.update("UPDATE Aihe SET aiheMuokattu = ? WHERE aiheId = ?",
+                ketju.getKetjuMuokattu(),
+                ketju.getKetjuAihe().getAiheId());
     }
 
     public List<Ketju> findBy(Aihe aihe) throws SQLException {
         return database.queryAndCollect(
-                "SELECT * FROM Aihe A, Ketju K WHERE A.id = K.aihe AND A.id = ?",
+                "SELECT * FROM Aihe A, Ketju K WHERE A.aiheId = K.ketjuAihe "
+                + "AND A.aiheId = ?",
                 rs -> new Ketju(
                         rs.getInt("ketjuId"),
                         new Aihe(
                                 rs.getInt("ketjuAihe"),
-                                aiheDao.findOne(rs.getString("ketjuAihe")).getAiheNimi(),
-                                aiheDao.findOne(rs.getString("ketjuAihe")).getAiheMuokattu()),
+                                aiheDao.findOne(rs.getString("ketjuAihe"))
+                                .getAiheNimi(),
+                                aiheDao.findOne(rs.getString("ketjuAihe"))
+                                .getAiheMuokattu()),
                         rs.getTimestamp("ketjuMuokattu"),
                         rs.getString("ketjuOtsikko")),
                 aihe.getAiheId());
