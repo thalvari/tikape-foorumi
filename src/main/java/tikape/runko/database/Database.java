@@ -8,8 +8,7 @@ public class Database {
     private String address;
     private boolean debug;
 
-    public Database(String driver, String address) throws ClassNotFoundException {
-        Class.forName(driver);
+    public Database(String address) {
         this.address = address;
     }
 
@@ -93,7 +92,8 @@ public class Database {
         System.out.println();
     }
 
-    public int update(String updateQuery, Object... params) throws SQLException {
+    public int update(String updateQuery, Object... params)
+            throws SQLException {
         Connection conn = getConnection();
         PreparedStatement stmt = conn.prepareStatement(updateQuery);
         for (int i = 0; i < params.length; i++) {

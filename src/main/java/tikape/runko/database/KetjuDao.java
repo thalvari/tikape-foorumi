@@ -68,8 +68,7 @@ public class KetjuDao implements Dao<Ketju, String> {
 
     public List<Ketju> findBy(Aihe aihe) throws SQLException {
         return database.queryAndCollect(
-                "SELECT * FROM Aihe A, Ketju K WHERE A.aiheId = K.ketjuAihe "
-                + "AND A.aiheId = ?",
+                "SELECT * FROM Ketju WHERE ketjuAihe = ?",
                 rs -> new Ketju(
                         rs.getInt("ketjuId"),
                         new Aihe(

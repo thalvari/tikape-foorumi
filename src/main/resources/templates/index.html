@@ -10,7 +10,7 @@
 
         <ul style="list-style-type:none">
             <li th:each="aihe: ${aiheet}">
-                <a th:href="@{~/aihe/{aiheId}(id=${aihe.aiheId})}"
+                <a th:href="@{~/aihe/{aiheId}(aiheId=${aihe.aiheId})}"
                    th:text="${aihe.aiheNimi}"></a>
                 <i>muokattu: </i>
                 <i th:text="${aihe.aiheMuokattu}"></i>

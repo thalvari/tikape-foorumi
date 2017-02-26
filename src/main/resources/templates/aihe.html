@@ -6,11 +6,11 @@
     </head>
     <body>
         <h1>Aihe</h1>
-        <h2 th:text="${aihe.nimi}"></h2>
+        <h2 th:text="${aihe.aiheNimi}"></h2>
 
         <ul style="list-style-type:none">
             <li th:each="ketju: ${ketjut}">
-                <a th:href="@{~/ketju/{ketjuId}(id=${ketju.ketjuId})}"
+                <a th:href="@{~/ketju/{ketjuId}(ketjuId=${ketju.ketjuId})}"
                    th:text="${ketju.ketjuOtsikko}"></a>
                 <i>muokattu: </i>
                 <i th:text="${ketju.ketjuMuokattu}"></i>

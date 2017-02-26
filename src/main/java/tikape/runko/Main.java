@@ -18,7 +18,7 @@ import tikape.runko.domain.Ketju;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        Database database = new Database("org.sqlite.JDBC", "jdbc:sqlite:foorumi.db");
+        Database database = new Database("jdbc:sqlite:foorumi.db");
         database.setDebugMode(true);
         database.init();
 
@@ -26,7 +26,7 @@ public class Main {
         KetjuDao ketjuDao = new KetjuDao(database);
         ViestiDao viestiDao = new ViestiDao(database);
 
-        alustaTestausLauseet(database);
+//        alustaTestausLauseet(database);
 
         get("/", (req, res) -> {
             HashMap map = new HashMap<>();
@@ -37,7 +37,7 @@ public class Main {
 
         get("/aihe/:id", (req, res) -> {
             HashMap map = new HashMap<>();
-            Aihe aihe = aiheDao.findOne(":id");
+            Aihe aihe = aiheDao.findOne(req.params(":id"));
             List<Ketju> ketjut = ketjuDao.findBy(aihe);
             map.put("aihe", aihe);
             map.put("ketjut", ketjut);
