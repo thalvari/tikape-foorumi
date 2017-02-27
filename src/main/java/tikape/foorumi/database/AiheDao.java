@@ -1,8 +1,8 @@
-package tikape.runko.database;
+package tikape.foorumi.database;
 
 import java.sql.SQLException;
 import java.util.List;
-import tikape.runko.domain.Aihe;
+import tikape.foorumi.domain.Aihe;
 
 public class AiheDao implements Dao<Aihe, String> {
 

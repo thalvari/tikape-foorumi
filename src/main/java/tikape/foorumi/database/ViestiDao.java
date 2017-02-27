@@ -1,9 +1,9 @@
-package tikape.runko.database;
+package tikape.foorumi.database;
 
 import java.sql.SQLException;
 import java.util.List;
-import tikape.runko.domain.Ketju;
-import tikape.runko.domain.Viesti;
+import tikape.foorumi.domain.Ketju;
+import tikape.foorumi.domain.Viesti;
 
 public class ViestiDao implements Dao<Viesti, String> {
 

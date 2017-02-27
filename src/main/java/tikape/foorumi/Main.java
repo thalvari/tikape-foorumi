@@ -1,4 +1,4 @@
-package tikape.runko;
+package tikape.foorumi;
 
 import java.util.HashMap;
 import java.util.List;
@@ -6,13 +6,13 @@ import spark.ModelAndView;
 import static spark.Spark.get;
 import static spark.Spark.post;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
-import tikape.runko.database.AiheDao;
-import tikape.runko.database.Database;
-import tikape.runko.database.KetjuDao;
-import tikape.runko.database.ViestiDao;
-import tikape.runko.domain.Aihe;
-import tikape.runko.domain.Ketju;
-import tikape.runko.domain.Viesti;
+import tikape.foorumi.database.AiheDao;
+import tikape.foorumi.database.Database;
+import tikape.foorumi.database.KetjuDao;
+import tikape.foorumi.database.ViestiDao;
+import tikape.foorumi.domain.Aihe;
+import tikape.foorumi.domain.Ketju;
+import tikape.foorumi.domain.Viesti;
 
 public class Main {
 

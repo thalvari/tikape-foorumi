@@ -1,9 +1,9 @@
-package tikape.runko.database;
+package tikape.foorumi.database;
 
 import java.sql.SQLException;
 import java.util.List;
-import tikape.runko.domain.Aihe;
-import tikape.runko.domain.Ketju;
+import tikape.foorumi.domain.Aihe;
+import tikape.foorumi.domain.Ketju;
 
 public class KetjuDao implements Dao<Ketju, String> {
 
