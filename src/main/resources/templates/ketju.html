@@ -20,23 +20,12 @@
         <form method="POST" th:action=
               "@{~/uusiViesti/{ketjuId}(ketjuId=${ketju.ketjuId})}">
             <table>
-                <tr> 
-                    <th>nimimerkki</th>
-                    <th>viesti</th>
-                    <th></th>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="text" name="nimimerkki"/>
-                    </td>
-                    <td>
-                        <textarea rows="4" cols="50" name="sisalto"/>
-                    </td>
-                    <td>
-                        <input type="submit" value="luo"/>
-                    </td>
-                </tr>
+                <tr><th>nimimerkki</th></tr>
+                <tr><td><input type="text" name="nimimerkki"/></td></tr>
+                <tr><th>viesti</th></tr>
+                <tr><td><textarea rows="4" cols="50" name="sisalto"/></td></tr>
             </table>
+            <p><input type="submit" value="luo"/></p>
         </form>
         <h2>Viestit:</h2>
         <table>
@@ -47,7 +36,7 @@
             </tr>
             <tr th:each="viesti: ${viestit}">
                 <td th:text="${viesti.viestiNimimerkki}"></td>
-                <td th:text="${viesti.viestiSisalto}"></td>          
+                <td th:text="${viesti.viestiSisalto}" width="100%"></td>          
                 <td th:text="${viesti.viestiAika}"></td>
             </tr>
         </table>

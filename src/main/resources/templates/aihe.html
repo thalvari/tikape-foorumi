@@ -22,17 +22,20 @@
             <table>
                 <tr>
                     <th>otsikko</th>
-                    <th></th>
+                    <th>nimimerkki</th>
                 </tr>
                 <tr>
-                    <td>
-                        <input type="text" name="otsikko"/>
-                    </td>
-                    <td>
-                        <input type="submit" value="luo"/>
+                    <td><input type="text" name="otsikko"/></td>
+                    <td><input type="text" name="nimimerkki"/></td>
+                </tr>
+                <tr><th colspan="2">viesti</th></tr>
+                <tr>
+                    <td colspan="2">
+                        <textarea rows="4" cols="50" name="sisalto"/>
                     </td>
                 </tr>
             </table>
+            <p><input type="submit" value="luo"/></p>
         </form>
         <h2>Ketjut:</h2>
         <table>
@@ -58,8 +61,6 @@
                offset=${offset}+10)}"
                th:text="seuraavat"></a>
         </p>
-        <p>
-            <a th:href="@{~/}" th:text="aiheisiin"></a>
-        </p>
+        <p><a th:href="@{~/}" th:text="aiheisiin"></a></p>
     </body>
 </html>

@@ -19,6 +19,11 @@ public class Ketju {
         this.ketjuViestienMaara = ketjuViestienMaara;
     }
 
+    public Ketju(Aihe ketjuAihe, String ketjuOtsikko) {
+        this(0, ketjuAihe, new Timestamp(System.currentTimeMillis()),
+                ketjuOtsikko, 0);
+    }
+
     public int getKetjuId() {
         return ketjuId;
     }

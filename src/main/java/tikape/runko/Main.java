@@ -1,6 +1,5 @@
 package tikape.runko;
 
-import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import spark.ModelAndView;
@@ -19,7 +18,7 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         Database database = new Database("jdbc:sqlite:foorumi.db");
-        database.setDebugMode(true);
+//        database.setDebugMode(true);
         database.init();
 
         AiheDao aiheDao = new AiheDao(database);
@@ -77,9 +76,7 @@ public class Main {
         post("/uusiAihe", (req, res) -> {
             String nimi = req.queryParams("nimi").trim();
             if (!nimi.isEmpty()) {
-                aiheDao.save(new Aihe(0,
-                        new Timestamp(System.currentTimeMillis()),
-                        nimi, 0));
+                aiheDao.save(new Aihe(nimi));
             }
             res.redirect("/");
             return "";
@@ -88,10 +85,13 @@ public class Main {
         post("/uusiKetju/:id", (req, res) -> {
             Aihe aihe = aiheDao.findOne(req.params(":id"));
             String otsikko = req.queryParams("otsikko").trim();
-            if (!otsikko.isEmpty()) {
-                ketjuDao.save(new Ketju(0, aihe,
-                        new Timestamp(System.currentTimeMillis()),
-                        otsikko, 0));
+            String nimimerkki = req.queryParams("nimimerkki").trim();
+            String sisalto = req.queryParams("sisalto").trim();
+            if (!otsikko.isEmpty() && !nimimerkki.isEmpty()
+                    && !sisalto.isEmpty()) {
+                ketjuDao.save(new Ketju(aihe, otsikko));
+                Ketju ketju = ketjuDao.findBy(aihe, "" + 0).get(0);
+                viestiDao.save(new Viesti(ketju, nimimerkki, sisalto));
             }
             res.redirect("/aihe/" + req.params(":id"));
             return "";
@@ -102,9 +102,7 @@ public class Main {
             String nimimerkki = req.queryParams("nimimerkki").trim();
             String sisalto = req.queryParams("sisalto").trim();
             if (!nimimerkki.isEmpty() && !sisalto.isEmpty()) {
-                viestiDao.save(new Viesti(0, ketju,
-                        new Timestamp(System.currentTimeMillis()),
-                        nimimerkki, sisalto));
+                viestiDao.save(new Viesti(ketju, nimimerkki, sisalto));
             }
             res.redirect("/ketju/" + req.params(":id"));
             return "";

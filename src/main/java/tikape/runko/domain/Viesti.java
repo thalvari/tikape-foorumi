@@ -19,6 +19,12 @@ public class Viesti {
         this.viestiSisalto = viestiSisalto;
     }
 
+    public Viesti(Ketju viestiKetju, String viestiNimimerkki,
+            String viestiSisalto) {
+        this(0, viestiKetju, new Timestamp(System.currentTimeMillis()),
+                viestiNimimerkki, viestiSisalto);
+    }
+
     public int getViestiId() {
         return viestiId;
     }

@@ -17,19 +17,33 @@ public class ViestiDao implements Dao<Viesti, String> {
 
     @Override
     public List<Viesti> findAll(String offset) throws SQLException {
-        return this.database.queryAndCollect("SELECT * FROM Viesti "
+        return database.queryAndCollect("SELECT * FROM Viesti "
                 + "ORDER BY viestiAika DESC LIMIT 10 OFFSET ?",
                 rs -> new Viesti(
                         rs.getInt("viestiId"),
                         ketjuDao.findOne(rs.getString("viestiKetju")),
                         rs.getTimestamp("viestiAika"),
                         rs.getString("viestiNimimerkki"),
-                        rs.getString("viestiSisalto")), offset);
+                        rs.getString("viestiSisalto")),
+                offset);
     }
 
     @Override
     public Viesti findOne(String key) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        List<Viesti> viestit = database.queryAndCollect(
+                "SELECT * FROM Viesti WHERE viestiId = ?",
+                rs -> new Viesti(
+                        rs.getInt("viestiId"),
+                        ketjuDao.findOne(rs.getString("viestiKetju")),
+                        rs.getTimestamp("viestiAika"),
+                        rs.getString("viestiNimimerkki"),
+                        rs.getString("viestiSisalto")),
+                key);
+        if (viestit == null) {
+            return null;
+        } else {
+            return viestit.get(0);
+        }
     }
 
     @Override
@@ -59,7 +73,7 @@ public class ViestiDao implements Dao<Viesti, String> {
     }
 
     public List<Viesti> findBy(Ketju ketju, String offset) throws SQLException {
-        return this.database.queryAndCollect("SELECT * FROM Ketju K, Viesti V "
+        return database.queryAndCollect("SELECT * FROM Ketju K, Viesti V "
                 + "WHERE K.ketjuId = V.viestiKetju AND K.ketjuId = ? "
                 + "ORDER BY viestiAika DESC LIMIT 10 OFFSET ?",
                 rs -> new Viesti(
@@ -68,6 +82,7 @@ public class ViestiDao implements Dao<Viesti, String> {
                         rs.getTimestamp("viestiAika"),
                         rs.getString("viestiNimimerkki"),
                         rs.getString("viestiSisalto")),
-                ketju.getKetjuId(), offset);
+                ketju.getKetjuId(),
+                offset);
     }
 }

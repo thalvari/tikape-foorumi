@@ -17,6 +17,10 @@ public class Aihe {
         this.aiheViestienMaara = aiheViestienMaara;
     }
 
+    public Aihe(String aiheNimi) {
+        this(0, new Timestamp(System.currentTimeMillis()), aiheNimi, 0);
+    }
+
     public int getAiheId() {
         return aiheId;
     }

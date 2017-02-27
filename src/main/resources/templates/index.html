@@ -19,19 +19,10 @@
         <h2>Luo uusi aihe:</h2>
         <form method="POST" th:action="@{~/uusiAihe}">
             <table>
-                <tr>
-                    <th>nimi</th>
-                    <th></th>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="text" name="nimi"/>
-                    </td>
-                    <td>
-                        <input type="submit" value="luo"/>
-                    </td>
-                </tr>
+                <tr><th>nimi</th></tr>
+                <tr><td><input type="text" name="nimi"/></td></tr>
             </table>
+            <p><input type="submit" value="luo"/></p>
         </form>
         <h2>Aiheet:</h2>
         <table>
