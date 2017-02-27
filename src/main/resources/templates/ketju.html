@@ -5,8 +5,29 @@
         <meta charset="utf-8"/>
     </head>
     <body>
-        <h1>Ketju</h1>
-        <h2 th:text="${ketju.ketjuOtsikko}"></h2>
+        <h1 th:text="${ketju.ketjuOtsikko}"></h1>
+        <h2>Kirjoita:</h2>
+        <form method="POST" th:action=
+              "@{~/uusiViesti/{ketjuId}(ketjuId=${ketju.ketjuId})}">
+            <table>
+                <tr>
+                    <th>nimimerkki</th>
+                    <th>sisältö</th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" name="nimimerkki"/>
+                    </td>
+                    <td>
+                        <input type="text" name="sisalto"/>
+                    </td>
+                    <td>
+                        <input type="submit" value="lähetä"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
         <table>
             <tr th:each="viesti: ${viestit}">
                 <td th:text="${viesti.viestiAika}"></td>

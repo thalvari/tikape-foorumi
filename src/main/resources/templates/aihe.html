@@ -14,8 +14,25 @@
         </style>
     </head>
     <body>
-        <h1>Aihe</h1>
-        <h2 th:text="${aihe.aiheNimi}"></h2>
+        <h1 th:text="${aihe.aiheNimi}"></h1>
+        <h2>Lisää uusi ketju:</h2>
+        <form method="POST" th:action=
+              "@{~/uusiKetju/{aiheId}(aiheId=${aihe.aiheId})}">
+            <table>
+                <tr>
+                    <th>otsikko</th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" name="otsikko"/>
+                    </td>
+                    <td>
+                        <input type="submit" value="lisää"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
         <table>
             <tr>
                 <th>otsikko</th>

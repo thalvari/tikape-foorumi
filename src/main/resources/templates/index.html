@@ -15,7 +15,24 @@
     </head>
     <body>
         <h1>Foorumi</h1>
-        <h2>Aiheet</h2>
+        <h2>Lisää aihe:</h2>
+        <form method="POST" th:action=
+              "@{~/uusiAihe}">
+            <table>
+                <tr>
+                    <th>nimi</th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" name="nimi"/>
+                    </td>
+                    <td>
+                        <input type="submit" value="lisää"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
         <table>
             <tr>
                 <th>nimi</th>

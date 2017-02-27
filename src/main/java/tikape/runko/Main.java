@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import spark.ModelAndView;
 import static spark.Spark.get;
+import static spark.Spark.post;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 import tikape.runko.database.AiheDao;
 import tikape.runko.database.Database;
@@ -54,6 +55,41 @@ public class Main {
             map.put("viestit", viestit);
             return new ModelAndView(map, "ketju");
         }, new ThymeleafTemplateEngine());
+
+        post("/uusiAihe", (req, res) -> {
+            String nimi = req.queryParams("nimi").trim();
+            if (!nimi.isEmpty()) {
+                aiheDao.save(new Aihe(0, nimi,
+                        new Timestamp(System.currentTimeMillis())));
+            }
+            res.redirect("/");
+            return "";
+        });
+
+        post("/uusiKetju/:id", (req, res) -> {
+            Aihe aihe = aiheDao.findOne(req.params(":id"));
+            String otsikko = req.queryParams("otsikko").trim();
+            if (!otsikko.isEmpty()) {
+                ketjuDao.save(new Ketju(0, aihe,
+                        new Timestamp(System.currentTimeMillis()),
+                        otsikko));
+            }
+            res.redirect("/aihe/" + req.params(":id"));
+            return "";
+        });
+
+        post("/uusiViesti/:id", (req, res) -> {
+            Ketju ketju = ketjuDao.findOne(req.params(":id"));
+            String nimimerkki = req.queryParams("nimimerkki").trim();
+            String sisalto = req.queryParams("sisalto").trim();
+            if (!nimimerkki.isEmpty() && !sisalto.isEmpty()) {
+                viestiDao.save(new Viesti(0, ketju,
+                        new Timestamp(System.currentTimeMillis()),
+                        nimimerkki, sisalto));
+            }
+            res.redirect("/ketju/" + req.params(":id"));
+            return "";
+        });
     }
 
     private static void alustaTestiSisalto(Database database)
