@@ -37,6 +37,7 @@
         <table>
             <tr>
                 <th>nimi</th>
+                <th>viestit</th>
                 <th>muokattu</th>
             </tr>
             <tr th:each="aihe: ${aiheet}">
@@ -44,6 +45,7 @@
                     <a th:href="@{~/aihe/{aiheId}(aiheId=${aihe.aiheId})}"
                        th:text="${aihe.aiheNimi}"></a>
                 </td>
+                <td th:text="${aihe.aiheViestienMaara}"></td>
                 <td th:text="${aihe.aiheMuokattu}"></td>
             </tr>
         </table>

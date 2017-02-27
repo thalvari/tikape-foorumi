@@ -44,8 +44,17 @@ public class ViestiDao implements Dao<Viesti, String> {
         database.update("UPDATE Aihe SET aiheMuokattu = ? WHERE aiheId = ?",
                 viesti.getViestiAika(),
                 viesti.getViestiKetju().getKetjuAihe().getAiheId());
+        database.update("UPDATE Aihe SET aiheViestienMaara = ? "
+                + "WHERE aiheId = ?",
+                viesti.getViestiKetju().getKetjuAihe().getAiheViestienMaara()
+                + 1,
+                viesti.getViestiKetju().getKetjuAihe().getAiheId());
         database.update("UPDATE Ketju SET ketjuMuokattu = ? WHERE ketjuId = ?",
                 viesti.getViestiAika(),
+                viesti.getViestiKetju().getKetjuId());
+        database.update("UPDATE Ketju SET ketjuViestienMaara = ? "
+                + "WHERE ketjuId = ?",
+                viesti.getViestiKetju().getKetjuViestienMaara() + 1,
                 viesti.getViestiKetju().getKetjuId());
     }
 

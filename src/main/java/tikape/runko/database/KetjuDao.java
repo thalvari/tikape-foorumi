@@ -23,7 +23,9 @@ public class KetjuDao implements Dao<Ketju, String> {
                         rs.getInt("ketjuId"),
                         aiheDao.findOne(rs.getString("ketjuAihe")),
                         rs.getTimestamp("ketjuMuokattu"),
-                        rs.getString("ketjuOtsikko")), offset);
+                        rs.getString("ketjuOtsikko"),
+                        rs.getInt("ketjuViestienMaara")),
+                offset);
 
     }
 
@@ -35,7 +37,8 @@ public class KetjuDao implements Dao<Ketju, String> {
                         rs.getInt("ketjuId"),
                         aiheDao.findOne(rs.getString("ketjuAihe")),
                         rs.getTimestamp("ketjuMuokattu"),
-                        rs.getString("ketjuOtsikko")),
+                        rs.getString("ketjuOtsikko"),
+                        rs.getInt("ketjuViestienMaara")),
                 key);
         if (ketjut == null) {
             return null;
@@ -47,11 +50,12 @@ public class KetjuDao implements Dao<Ketju, String> {
     @Override
     public void save(Ketju ketju) throws SQLException {
         database.update("INSERT "
-                + "INTO Ketju (ketjuAihe, ketjuMuokattu, ketjuOtsikko) "
-                + "VALUES (?, ?, ?)",
+                + "INTO Ketju (ketjuAihe, ketjuMuokattu, ketjuOtsikko,"
+                + "ketjuViestienMaara) VALUES (?, ?, ?, ?)",
                 ketju.getKetjuAihe().getAiheId(),
                 ketju.getKetjuMuokattu(),
-                ketju.getKetjuOtsikko());
+                ketju.getKetjuOtsikko(),
+                ketju.getKetjuViestienMaara());
         database.update("UPDATE Aihe SET aiheMuokattu = ? WHERE aiheId = ?",
                 ketju.getKetjuMuokattu(),
                 ketju.getKetjuAihe().getAiheId());
@@ -65,7 +69,8 @@ public class KetjuDao implements Dao<Ketju, String> {
                         rs.getInt("ketjuId"),
                         aiheDao.findOne(rs.getString("ketjuAihe")),
                         rs.getTimestamp("ketjuMuokattu"),
-                        rs.getString("ketjuOtsikko")),
+                        rs.getString("ketjuOtsikko"),
+                        rs.getInt("ketjuViestienMaara")),
                 aihe.getAiheId(), offset);
     }
 }

@@ -19,20 +19,20 @@ public class Viesti {
         this.viestiSisalto = viestiSisalto;
     }
 
-    public Timestamp getViestiAika() {
-        return viestiAika;
-    }
-
-    public void setViestiAika(Timestamp viestiAika) {
-        this.viestiAika = viestiAika;
-    }
-
     public int getViestiId() {
         return viestiId;
     }
 
     public void setViestiId(int viestiId) {
         this.viestiId = viestiId;
+    }
+
+    public Timestamp getViestiAika() {
+        return viestiAika;
+    }
+
+    public void setViestiAika(Timestamp viestiAika) {
+        this.viestiAika = viestiAika;
     }
 
     public Ketju getViestiKetju() {

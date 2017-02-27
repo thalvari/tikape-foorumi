@@ -74,13 +74,24 @@ public class Main {
             return "";
         });
 
+        post("/uusiAihe", (req, res) -> {
+            String nimi = req.queryParams("nimi").trim();
+            if (!nimi.isEmpty()) {
+                aiheDao.save(new Aihe(0,
+                        new Timestamp(System.currentTimeMillis()),
+                        nimi, 0));
+            }
+            res.redirect("/");
+            return "";
+        });
+
         post("/uusiKetju/:id", (req, res) -> {
             Aihe aihe = aiheDao.findOne(req.params(":id"));
             String otsikko = req.queryParams("otsikko").trim();
             if (!otsikko.isEmpty()) {
                 ketjuDao.save(new Ketju(0, aihe,
                         new Timestamp(System.currentTimeMillis()),
-                        otsikko));
+                        otsikko, 0));
             }
             res.redirect("/aihe/" + req.params(":id"));
             return "";

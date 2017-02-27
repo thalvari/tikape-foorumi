@@ -38,6 +38,7 @@
         <table>
             <tr>
                 <th>otsikko</th>
+                <th>viestit</th>
                 <th>muokattu</th>
             </tr>
             <tr th:each="ketju: ${ketjut}">
@@ -45,6 +46,7 @@
                     <a th:href="@{~/ketju/{ketjuId}(ketjuId=${ketju.ketjuId})}"
                        th:text="${ketju.ketjuOtsikko}"></a>
                 </td>
+                <td th:text="${ketju.ketjuViestienMaara}"></td>
                 <td th:text="${ketju.ketjuMuokattu}"></td>
             </tr>
         </table>

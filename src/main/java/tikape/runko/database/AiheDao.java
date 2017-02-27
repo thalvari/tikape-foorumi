@@ -18,8 +18,10 @@ public class AiheDao implements Dao<Aihe, String> {
                 + "ORDER BY aiheMuokattu DESC LIMIT 10 OFFSET ?",
                 rs -> new Aihe(
                         rs.getInt("aiheId"),
+                        rs.getTimestamp("aiheMuokattu"),
                         rs.getString("aiheNimi"),
-                        rs.getTimestamp("aiheMuokattu")), offset);
+                        rs.getInt("aiheViestienMaara")),
+                offset);
     }
 
     @Override
@@ -28,8 +30,9 @@ public class AiheDao implements Dao<Aihe, String> {
                 + "WHERE aiheId = ?",
                 rs -> new Aihe(
                         rs.getInt("aiheId"),
+                        rs.getTimestamp("aiheMuokattu"),
                         rs.getString("aiheNimi"),
-                        rs.getTimestamp("aiheMuokattu")),
+                        rs.getInt("aiheViestienMaara")),
                 key);
         if (aiheet == null) {
             return null;
@@ -40,9 +43,10 @@ public class AiheDao implements Dao<Aihe, String> {
 
     @Override
     public void save(Aihe aihe) throws SQLException {
-        database.update("INSERT INTO Aihe (aiheMuokattu, aiheNimi) "
-                + "VALUES (?, ?)",
+        database.update("INSERT INTO Aihe (aiheMuokattu, aiheNimi, "
+                + "aiheViestienMaara) VALUES (?, ?, ?)",
                 aihe.getAiheMuokattu(),
-                aihe.getAiheNimi());
+                aihe.getAiheNimi(),
+                aihe.getAiheViestienMaara());
     }
 }
