@@ -22,7 +22,7 @@ public class Main {
         Database database = new Database("jdbc:sqlite:foorumi.db");
         database.setDebugMode(true);
         database.init();
-//        alustaTestausLauseet(database);
+//        alustaTestiSisalto(database);
 
         AiheDao aiheDao = new AiheDao(database);
         KetjuDao ketjuDao = new KetjuDao(database);
@@ -56,7 +56,7 @@ public class Main {
         }, new ThymeleafTemplateEngine());
     }
 
-    private static void alustaTestausLauseet(Database database)
+    private static void alustaTestiSisalto(Database database)
             throws Exception {
         AiheDao aiheDao = new AiheDao(database);
         KetjuDao ketjuDao = new KetjuDao(database);
