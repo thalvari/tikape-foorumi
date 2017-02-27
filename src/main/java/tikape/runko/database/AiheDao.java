@@ -15,7 +15,7 @@ public class AiheDao implements Dao<Aihe, String> {
     @Override
     public List<Aihe> findAll(String offset) throws SQLException {
         return database.queryAndCollect("SELECT * FROM Aihe "
-                + "ORDER BY aiheMuokattu DESC LIMIT 10 OFFSET ?",
+                + "ORDER BY aiheNimi ASC LIMIT 10 OFFSET ?",
                 rs -> new Aihe(
                         rs.getInt("aiheId"),
                         rs.getTimestamp("aiheMuokattu"),
