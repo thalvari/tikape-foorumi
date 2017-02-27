@@ -16,14 +16,14 @@ public class KetjuDao implements Dao<Ketju, String> {
     }
 
     @Override
-    public List<Ketju> findAll() throws SQLException {
+    public List<Ketju> findAll(String offset) throws SQLException {
         return database.queryAndCollect("SELECT * FROM Ketju "
-                + "ORDER BY ketjuMuokattu DESC",
+                + "ORDER BY ketjuMuokattu DESC LIMIT 10 OFFSET ?",
                 rs -> new Ketju(
                         rs.getInt("ketjuId"),
                         aiheDao.findOne(rs.getString("ketjuAihe")),
                         rs.getTimestamp("ketjuMuokattu"),
-                        rs.getString("ketjuOtsikko")));
+                        rs.getString("ketjuOtsikko")), offset);
 
     }
 
@@ -57,15 +57,15 @@ public class KetjuDao implements Dao<Ketju, String> {
                 ketju.getKetjuAihe().getAiheId());
     }
 
-    public List<Ketju> findBy(Aihe aihe) throws SQLException {
+    public List<Ketju> findBy(Aihe aihe, String offset) throws SQLException {
         return database.queryAndCollect(
                 "SELECT * FROM Ketju WHERE ketjuAihe = ? "
-                + "ORDER BY ketjuMuokattu DESC",
+                + "ORDER BY ketjuMuokattu DESC LIMIT 10 OFFSET ?",
                 rs -> new Ketju(
                         rs.getInt("ketjuId"),
                         aiheDao.findOne(rs.getString("ketjuAihe")),
                         rs.getTimestamp("ketjuMuokattu"),
                         rs.getString("ketjuOtsikko")),
-                aihe.getAiheId());
+                aihe.getAiheId(), offset);
     }
 }

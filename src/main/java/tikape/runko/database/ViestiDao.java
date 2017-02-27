@@ -16,15 +16,15 @@ public class ViestiDao implements Dao<Viesti, String> {
     }
 
     @Override
-    public List<Viesti> findAll() throws SQLException {
+    public List<Viesti> findAll(String offset) throws SQLException {
         return this.database.queryAndCollect("SELECT * FROM Viesti "
-                + "ORDER BY viestiAika DESC",
+                + "ORDER BY viestiAika DESC LIMIT 10 OFFSET ?",
                 rs -> new Viesti(
                         rs.getInt("viestiId"),
                         ketjuDao.findOne(rs.getString("viestiKetju")),
                         rs.getTimestamp("viestiAika"),
                         rs.getString("viestiNimimerkki"),
-                        rs.getString("viestiSisalto")));
+                        rs.getString("viestiSisalto")), offset);
     }
 
     @Override
@@ -49,16 +49,16 @@ public class ViestiDao implements Dao<Viesti, String> {
                 viesti.getViestiKetju().getKetjuId());
     }
 
-    public List<Viesti> findBy(Ketju ketju) throws SQLException {
+    public List<Viesti> findBy(Ketju ketju, String offset) throws SQLException {
         return this.database.queryAndCollect("SELECT * FROM Ketju K, Viesti V "
                 + "WHERE K.ketjuId = V.viestiKetju AND K.ketjuId = ? "
-                + "ORDER BY viestiAika DESC",
+                + "ORDER BY viestiAika DESC LIMIT 10 OFFSET ?",
                 rs -> new Viesti(
                         rs.getInt("viestiId"),
                         ketjuDao.findOne(rs.getString("viestiKetju")),
                         rs.getTimestamp("viestiAika"),
                         rs.getString("viestiNimimerkki"),
                         rs.getString("viestiSisalto")),
-                ketju.getKetjuId());
+                ketju.getKetjuId(), offset);
     }
 }

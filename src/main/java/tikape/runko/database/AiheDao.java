@@ -13,13 +13,13 @@ public class AiheDao implements Dao<Aihe, String> {
     }
 
     @Override
-    public List<Aihe> findAll() throws SQLException {
+    public List<Aihe> findAll(String offset) throws SQLException {
         return database.queryAndCollect("SELECT * FROM Aihe "
-                + "ORDER BY aiheMuokattu DESC",
+                + "ORDER BY aiheMuokattu DESC LIMIT 10 OFFSET ?",
                 rs -> new Aihe(
                         rs.getInt("aiheId"),
                         rs.getString("aiheNimi"),
-                        rs.getTimestamp("aiheMuokattu")));
+                        rs.getTimestamp("aiheMuokattu")), offset);
     }
 
     @Override
