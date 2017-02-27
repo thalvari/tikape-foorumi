@@ -21,12 +21,7 @@ public class KetjuDao implements Dao<Ketju, String> {
                 + "ORDER BY ketjuMuokattu DESC",
                 rs -> new Ketju(
                         rs.getInt("ketjuId"),
-                        new Aihe(
-                                rs.getInt("ketjuAihe"),
-                                aiheDao.findOne(rs.getString("ketjuAihe"))
-                                .getAiheNimi(),
-                                aiheDao.findOne(rs.getString("ketjuAihe"))
-                                .getAiheMuokattu()),
+                        aiheDao.findOne(rs.getString("ketjuAihe")),
                         rs.getTimestamp("ketjuMuokattu"),
                         rs.getString("ketjuOtsikko")));
 
@@ -38,12 +33,7 @@ public class KetjuDao implements Dao<Ketju, String> {
                 "SELECT * FROM Ketju WHERE ketjuId = ?",
                 rs -> new Ketju(
                         rs.getInt("ketjuId"),
-                        new Aihe(
-                                rs.getInt("ketjuAihe"),
-                                aiheDao.findOne(rs.getString("ketjuAihe"))
-                                .getAiheNimi(),
-                                aiheDao.findOne(rs.getString("ketjuAihe"))
-                                .getAiheMuokattu()),
+                        aiheDao.findOne(rs.getString("ketjuAihe")),
                         rs.getTimestamp("ketjuMuokattu"),
                         rs.getString("ketjuOtsikko")),
                 key);
@@ -73,12 +63,7 @@ public class KetjuDao implements Dao<Ketju, String> {
                 + "ORDER BY ketjuMuokattu DESC",
                 rs -> new Ketju(
                         rs.getInt("ketjuId"),
-                        new Aihe(
-                                rs.getInt("ketjuAihe"),
-                                aiheDao.findOne(rs.getString("ketjuAihe"))
-                                .getAiheNimi(),
-                                aiheDao.findOne(rs.getString("ketjuAihe"))
-                                .getAiheMuokattu()),
+                        aiheDao.findOne(rs.getString("ketjuAihe")),
                         rs.getTimestamp("ketjuMuokattu"),
                         rs.getString("ketjuOtsikko")),
                 aihe.getAiheId());

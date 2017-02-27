@@ -21,13 +21,7 @@ public class ViestiDao implements Dao<Viesti, String> {
                 + "ORDER BY viestiAika DESC",
                 rs -> new Viesti(
                         rs.getInt("viestiId"),
-                        new Ketju(rs.getInt("viestiKetju"),
-                                ketjuDao.findOne(rs.getString("viestiKetju"))
-                                .getKetjuAihe(),
-                                ketjuDao.findOne(rs.getString("viestiKetju"))
-                                .getKetjuMuokattu(),
-                                ketjuDao.findOne(rs.getString("viestiKetju"))
-                                .getKetjuOtsikko()),
+                        ketjuDao.findOne(rs.getString("viestiKetju")),
                         rs.getTimestamp("viestiAika"),
                         rs.getString("viestiNimimerkki"),
                         rs.getString("viestiSisalto")));
@@ -61,13 +55,7 @@ public class ViestiDao implements Dao<Viesti, String> {
                 + "ORDER BY viestiAika DESC",
                 rs -> new Viesti(
                         rs.getInt("viestiId"),
-                        new Ketju(rs.getInt("viestiKetju"),
-                                ketjuDao.findOne(rs.getString("viestiKetju"))
-                                .getKetjuAihe(),
-                                ketjuDao.findOne(rs.getString("viestiKetju"))
-                                .getKetjuMuokattu(),
-                                ketjuDao.findOne(rs.getString("viestiKetju"))
-                                .getKetjuOtsikko()),
+                        ketjuDao.findOne(rs.getString("viestiKetju")),
                         rs.getTimestamp("viestiAika"),
                         rs.getString("viestiNimimerkki"),
                         rs.getString("viestiSisalto")),
