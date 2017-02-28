@@ -1,17 +1,24 @@
-package tikape.runko.domain;
+package tikape.foorumi.domain;
 
 import java.sql.Timestamp;
 
 public class Aihe {
 
     private int aiheId;
-    private String aiheNimi;
     private Timestamp aiheMuokattu;
+    private String aiheNimi;
+    private int aiheViestienMaara;
 
-    public Aihe(int aiheId, String aiheNimi, Timestamp aiheMuokattu) {
+    public Aihe(int aiheId, Timestamp aiheMuokattu, String aiheNimi,
+            int aiheViestienMaara) {
         this.aiheId = aiheId;
-        this.aiheNimi = aiheNimi;
         this.aiheMuokattu = aiheMuokattu;
+        this.aiheNimi = aiheNimi;
+        this.aiheViestienMaara = aiheViestienMaara;
+    }
+
+    public Aihe(String aiheNimi) {
+        this(0, new Timestamp(System.currentTimeMillis()), aiheNimi, 0);
     }
 
     public int getAiheId() {
@@ -38,8 +45,17 @@ public class Aihe {
         this.aiheNimi = aiheNimi;
     }
 
+    public int getAiheViestienMaara() {
+        return aiheViestienMaara;
+    }
+
+    public void setAiheViestienMaara(int aiheViestienMaara) {
+        this.aiheViestienMaara = aiheViestienMaara;
+    }
+
     @Override
     public String toString() {
-        return aiheId + "|" + aiheMuokattu + "|" + aiheNimi;
+        return aiheId + "|" + aiheMuokattu + "|" + aiheNimi + "|"
+                + aiheViestienMaara;
     }
 }

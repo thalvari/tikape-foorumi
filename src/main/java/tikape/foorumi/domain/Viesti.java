@@ -1,4 +1,4 @@
-package tikape.runko.domain;
+package tikape.foorumi.domain;
 
 import java.sql.Timestamp;
 
@@ -19,12 +19,10 @@ public class Viesti {
         this.viestiSisalto = viestiSisalto;
     }
 
-    public Timestamp getViestiAika() {
-        return viestiAika;
-    }
-
-    public void setViestiAika(Timestamp viestiAika) {
-        this.viestiAika = viestiAika;
+    public Viesti(Ketju viestiKetju, String viestiNimimerkki,
+            String viestiSisalto) {
+        this(0, viestiKetju, new Timestamp(System.currentTimeMillis()),
+                viestiNimimerkki, viestiSisalto);
     }
 
     public int getViestiId() {
@@ -33,6 +31,14 @@ public class Viesti {
 
     public void setViestiId(int viestiId) {
         this.viestiId = viestiId;
+    }
+
+    public Timestamp getViestiAika() {
+        return viestiAika;
+    }
+
+    public void setViestiAika(Timestamp viestiAika) {
+        this.viestiAika = viestiAika;
     }
 
     public Ketju getViestiKetju() {

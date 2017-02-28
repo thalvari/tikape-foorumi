@@ -1,11 +1,11 @@
-package tikape.runko.database;
+package tikape.foorumi.database;
 
 import java.sql.*;
 import java.util.*;
 
 public interface Dao<T, K> {
 
-    List<T> findAll() throws SQLException;
+    List<T> findAll(K offset) throws SQLException;
 
     T findOne(K key) throws SQLException;
 

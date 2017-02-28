@@ -1,8 +1,8 @@
-package tikape.runko.database;
+package tikape.foorumi.database;
 
 import java.sql.SQLException;
 import java.util.List;
-import tikape.runko.domain.Aihe;
+import tikape.foorumi.domain.Aihe;
 
 public class AiheDao implements Dao<Aihe, String> {
 
@@ -13,13 +13,15 @@ public class AiheDao implements Dao<Aihe, String> {
     }
 
     @Override
-    public List<Aihe> findAll() throws SQLException {
+    public List<Aihe> findAll(String offset) throws SQLException {
         return database.queryAndCollect("SELECT * FROM Aihe "
-                + "ORDER BY aiheMuokattu DESC",
+                + "ORDER BY aiheNimi ASC LIMIT 10 OFFSET ?",
                 rs -> new Aihe(
                         rs.getInt("aiheId"),
+                        rs.getTimestamp("aiheMuokattu"),
                         rs.getString("aiheNimi"),
-                        rs.getTimestamp("aiheMuokattu")));
+                        rs.getInt("aiheViestienMaara")),
+                offset);
     }
 
     @Override
@@ -28,8 +30,9 @@ public class AiheDao implements Dao<Aihe, String> {
                 + "WHERE aiheId = ?",
                 rs -> new Aihe(
                         rs.getInt("aiheId"),
+                        rs.getTimestamp("aiheMuokattu"),
                         rs.getString("aiheNimi"),
-                        rs.getTimestamp("aiheMuokattu")),
+                        rs.getInt("aiheViestienMaara")),
                 key);
         if (aiheet == null) {
             return null;
@@ -40,9 +43,10 @@ public class AiheDao implements Dao<Aihe, String> {
 
     @Override
     public void save(Aihe aihe) throws SQLException {
-        database.update("INSERT INTO Aihe (aiheMuokattu, aiheNimi) "
-                + "VALUES (?, ?)",
+        database.update("INSERT INTO Aihe (aiheMuokattu, aiheNimi, "
+                + "aiheViestienMaara) VALUES (?, ?, ?)",
                 aihe.getAiheMuokattu(),
-                aihe.getAiheNimi());
+                aihe.getAiheNimi(),
+                aihe.getAiheViestienMaara());
     }
 }

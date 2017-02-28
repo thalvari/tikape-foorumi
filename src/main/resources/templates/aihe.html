@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>Foorumi</title>
+        <title th:text="${aihe.aiheNimi}"></title>
         <meta charset="utf-8"/>
         <style>
             table, th, td {
                 border: 1px solid black;
+                border-collapse: collapse;
             }
             th, td {
                 padding: 5px;
@@ -15,27 +16,32 @@
     </head>
     <body>
         <h1 th:text="${aihe.aiheNimi}"></h1>
-        <h2>Lisää uusi ketju:</h2>
+        <h2>Luo uusi ketju:</h2>
         <form method="POST" th:action=
               "@{~/uusiKetju/{aiheId}(aiheId=${aihe.aiheId})}">
             <table>
                 <tr>
                     <th>otsikko</th>
-                    <th></th>
+                    <th>nimimerkki</th>
                 </tr>
                 <tr>
-                    <td>
-                        <input type="text" name="otsikko"/>
-                    </td>
-                    <td>
-                        <input type="submit" value="lisää"/>
+                    <td><input type="text" name="otsikko"/></td>
+                    <td><input type="text" name="nimimerkki"/></td>
+                </tr>
+                <tr><th colspan="2">viesti</th></tr>
+                <tr>
+                    <td colspan="2">
+                        <textarea rows="4" cols="50" name="sisalto"/>
                     </td>
                 </tr>
             </table>
+            <p><input type="submit" value="luo"/></p>
         </form>
+        <h2>Ketjut:</h2>
         <table>
             <tr>
                 <th>otsikko</th>
+                <th>viestit</th>
                 <th>muokattu</th>
             </tr>
             <tr th:each="ketju: ${ketjut}">
@@ -43,11 +49,18 @@
                     <a th:href="@{~/ketju/{ketjuId}(ketjuId=${ketju.ketjuId})}"
                        th:text="${ketju.ketjuOtsikko}"></a>
                 </td>
+                <td th:text="${ketju.ketjuViestienMaara}"></td>
                 <td th:text="${ketju.ketjuMuokattu}"></td>
             </tr>
         </table>
         <p>
-            <a th:href="@{~/}" th:text="takaisin"></a>
+            <a th:href="@{~/aihe/{aiheId}/{offset}(aiheId=${aihe.aiheId},
+               offset=${offset}-10)}"
+               th:text="edelliset"></a>
+            <a th:href="@{~/aihe/{aiheId}/{offset}(aiheId=${aihe.aiheId},
+               offset=${offset}+10)}"
+               th:text="seuraavat"></a>
         </p>
+        <p><a th:href="@{~/}" th:text="aiheisiin"></a></p>
     </body>
 </html>

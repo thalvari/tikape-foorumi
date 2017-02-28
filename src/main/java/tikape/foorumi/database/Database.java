@@ -1,4 +1,4 @@
-package tikape.runko.database;
+package tikape.foorumi.database;
 
 import java.sql.*;
 import java.util.*;
@@ -32,12 +32,14 @@ public class Database {
         lista.add("CREATE TABLE Aihe ("
                 + "aiheId integer PRIMARY KEY, "
                 + "aiheMuokattu timestamp NOT NULL, "
-                + "aiheNimi varchar(255) NOT NULL)");
+                + "aiheNimi varchar(255) NOT NULL, "
+                + "aiheViestienMaara integer NOT NULL)");
         lista.add("CREATE TABLE Ketju ("
                 + "ketjuId integer PRIMARY KEY, "
                 + "ketjuAihe integer NOT NULL, "
                 + "ketjuMuokattu timestamp NOT NULL, "
                 + "ketjuOtsikko varchar(255) NOT NULL, "
+                + "ketjuViestienMaara integer NOT NULL, "
                 + "FOREIGN KEY(ketjuAihe) REFERENCES Aihe(aiheId))");
         lista.add("CREATE TABLE Viesti ("
                 + "viestiId integer PRIMARY KEY, "

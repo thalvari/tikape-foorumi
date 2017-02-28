@@ -6,6 +6,7 @@
         <style>
             table, th, td {
                 border: 1px solid black;
+                border-collapse: collapse;
             }
             th, td {
                 padding: 5px;
@@ -15,27 +16,19 @@
     </head>
     <body>
         <h1>Foorumi</h1>
-        <h2>Lisää aihe:</h2>
-        <form method="POST" th:action=
-              "@{~/uusiAihe}">
+        <h2>Luo uusi aihe:</h2>
+        <form method="POST" th:action="@{~/uusiAihe}">
             <table>
-                <tr>
-                    <th>nimi</th>
-                    <th></th>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="text" name="nimi"/>
-                    </td>
-                    <td>
-                        <input type="submit" value="lisää"/>
-                    </td>
-                </tr>
+                <tr><th>nimi</th></tr>
+                <tr><td><input type="text" name="nimi"/></td></tr>
             </table>
+            <p><input type="submit" value="luo"/></p>
         </form>
+        <h2>Aiheet:</h2>
         <table>
             <tr>
                 <th>nimi</th>
+                <th>viestit</th>
                 <th>muokattu</th>
             </tr>
             <tr th:each="aihe: ${aiheet}">
@@ -43,8 +36,15 @@
                     <a th:href="@{~/aihe/{aiheId}(aiheId=${aihe.aiheId})}"
                        th:text="${aihe.aiheNimi}"></a>
                 </td>
+                <td th:text="${aihe.aiheViestienMaara}"></td>
                 <td th:text="${aihe.aiheMuokattu}"></td>
             </tr>
         </table>
+        <p>
+            <a th:href="@{~/{offset}(offset=${offset}-10)}"
+               th:text="edelliset"></a>
+            <a th:href="@{~/{offset}(offset=${offset}+10)}"
+               th:text="seuraavat"></a>
+        </p>
     </body>
 </html>

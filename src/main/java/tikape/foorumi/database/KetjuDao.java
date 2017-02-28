@@ -1,9 +1,9 @@
-package tikape.runko.database;
+package tikape.foorumi.database;
 
 import java.sql.SQLException;
 import java.util.List;
-import tikape.runko.domain.Aihe;
-import tikape.runko.domain.Ketju;
+import tikape.foorumi.domain.Aihe;
+import tikape.foorumi.domain.Ketju;
 
 public class KetjuDao implements Dao<Ketju, String> {
 
@@ -16,14 +16,16 @@ public class KetjuDao implements Dao<Ketju, String> {
     }
 
     @Override
-    public List<Ketju> findAll() throws SQLException {
+    public List<Ketju> findAll(String offset) throws SQLException {
         return database.queryAndCollect("SELECT * FROM Ketju "
-                + "ORDER BY ketjuMuokattu DESC",
+                + "ORDER BY ketjuMuokattu DESC LIMIT 10 OFFSET ?",
                 rs -> new Ketju(
                         rs.getInt("ketjuId"),
                         aiheDao.findOne(rs.getString("ketjuAihe")),
                         rs.getTimestamp("ketjuMuokattu"),
-                        rs.getString("ketjuOtsikko")));
+                        rs.getString("ketjuOtsikko"),
+                        rs.getInt("ketjuViestienMaara")),
+                offset);
 
     }
 
@@ -35,7 +37,8 @@ public class KetjuDao implements Dao<Ketju, String> {
                         rs.getInt("ketjuId"),
                         aiheDao.findOne(rs.getString("ketjuAihe")),
                         rs.getTimestamp("ketjuMuokattu"),
-                        rs.getString("ketjuOtsikko")),
+                        rs.getString("ketjuOtsikko"),
+                        rs.getInt("ketjuViestienMaara")),
                 key);
         if (ketjut == null) {
             return null;
@@ -47,25 +50,27 @@ public class KetjuDao implements Dao<Ketju, String> {
     @Override
     public void save(Ketju ketju) throws SQLException {
         database.update("INSERT "
-                + "INTO Ketju (ketjuAihe, ketjuMuokattu, ketjuOtsikko) "
-                + "VALUES (?, ?, ?)",
+                + "INTO Ketju (ketjuAihe, ketjuMuokattu, ketjuOtsikko,"
+                + "ketjuViestienMaara) VALUES (?, ?, ?, ?)",
                 ketju.getKetjuAihe().getAiheId(),
                 ketju.getKetjuMuokattu(),
-                ketju.getKetjuOtsikko());
+                ketju.getKetjuOtsikko(),
+                ketju.getKetjuViestienMaara());
         database.update("UPDATE Aihe SET aiheMuokattu = ? WHERE aiheId = ?",
                 ketju.getKetjuMuokattu(),
                 ketju.getKetjuAihe().getAiheId());
     }
 
-    public List<Ketju> findBy(Aihe aihe) throws SQLException {
+    public List<Ketju> findBy(Aihe aihe, String offset) throws SQLException {
         return database.queryAndCollect(
                 "SELECT * FROM Ketju WHERE ketjuAihe = ? "
-                + "ORDER BY ketjuMuokattu DESC",
+                + "ORDER BY ketjuMuokattu DESC LIMIT 10 OFFSET ?",
                 rs -> new Ketju(
                         rs.getInt("ketjuId"),
                         aiheDao.findOne(rs.getString("ketjuAihe")),
                         rs.getTimestamp("ketjuMuokattu"),
-                        rs.getString("ketjuOtsikko")),
-                aihe.getAiheId());
+                        rs.getString("ketjuOtsikko"),
+                        rs.getInt("ketjuViestienMaara")),
+                aihe.getAiheId(), offset);
     }
 }

@@ -1,9 +1,9 @@
-package tikape.runko.database;
+package tikape.foorumi.database;
 
 import java.sql.SQLException;
 import java.util.List;
-import tikape.runko.domain.Ketju;
-import tikape.runko.domain.Viesti;
+import tikape.foorumi.domain.Ketju;
+import tikape.foorumi.domain.Viesti;
 
 public class ViestiDao implements Dao<Viesti, String> {
 
@@ -16,20 +16,34 @@ public class ViestiDao implements Dao<Viesti, String> {
     }
 
     @Override
-    public List<Viesti> findAll() throws SQLException {
-        return this.database.queryAndCollect("SELECT * FROM Viesti "
-                + "ORDER BY viestiAika DESC",
+    public List<Viesti> findAll(String offset) throws SQLException {
+        return database.queryAndCollect("SELECT * FROM Viesti "
+                + "ORDER BY viestiAika DESC LIMIT 10 OFFSET ?",
                 rs -> new Viesti(
                         rs.getInt("viestiId"),
                         ketjuDao.findOne(rs.getString("viestiKetju")),
                         rs.getTimestamp("viestiAika"),
                         rs.getString("viestiNimimerkki"),
-                        rs.getString("viestiSisalto")));
+                        rs.getString("viestiSisalto")),
+                offset);
     }
 
     @Override
     public Viesti findOne(String key) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        List<Viesti> viestit = database.queryAndCollect(
+                "SELECT * FROM Viesti WHERE viestiId = ?",
+                rs -> new Viesti(
+                        rs.getInt("viestiId"),
+                        ketjuDao.findOne(rs.getString("viestiKetju")),
+                        rs.getTimestamp("viestiAika"),
+                        rs.getString("viestiNimimerkki"),
+                        rs.getString("viestiSisalto")),
+                key);
+        if (viestit == null) {
+            return null;
+        } else {
+            return viestit.get(0);
+        }
     }
 
     @Override
@@ -44,21 +58,31 @@ public class ViestiDao implements Dao<Viesti, String> {
         database.update("UPDATE Aihe SET aiheMuokattu = ? WHERE aiheId = ?",
                 viesti.getViestiAika(),
                 viesti.getViestiKetju().getKetjuAihe().getAiheId());
+        database.update("UPDATE Aihe SET aiheViestienMaara = ? "
+                + "WHERE aiheId = ?",
+                viesti.getViestiKetju().getKetjuAihe().getAiheViestienMaara()
+                + 1,
+                viesti.getViestiKetju().getKetjuAihe().getAiheId());
         database.update("UPDATE Ketju SET ketjuMuokattu = ? WHERE ketjuId = ?",
                 viesti.getViestiAika(),
                 viesti.getViestiKetju().getKetjuId());
+        database.update("UPDATE Ketju SET ketjuViestienMaara = ? "
+                + "WHERE ketjuId = ?",
+                viesti.getViestiKetju().getKetjuViestienMaara() + 1,
+                viesti.getViestiKetju().getKetjuId());
     }
 
-    public List<Viesti> findBy(Ketju ketju) throws SQLException {
-        return this.database.queryAndCollect("SELECT * FROM Ketju K, Viesti V "
+    public List<Viesti> findBy(Ketju ketju, String offset) throws SQLException {
+        return database.queryAndCollect("SELECT * FROM Ketju K, Viesti V "
                 + "WHERE K.ketjuId = V.viestiKetju AND K.ketjuId = ? "
-                + "ORDER BY viestiAika DESC",
+                + "ORDER BY viestiAika DESC LIMIT 10 OFFSET ?",
                 rs -> new Viesti(
                         rs.getInt("viestiId"),
                         ketjuDao.findOne(rs.getString("viestiKetju")),
                         rs.getTimestamp("viestiAika"),
                         rs.getString("viestiNimimerkki"),
                         rs.getString("viestiSisalto")),
-                ketju.getKetjuId());
+                ketju.getKetjuId(),
+                offset);
     }
 }
