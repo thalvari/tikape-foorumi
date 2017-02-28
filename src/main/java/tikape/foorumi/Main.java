@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import spark.ModelAndView;
 import static spark.Spark.get;
+import static spark.Spark.port;
 import static spark.Spark.post;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 import tikape.foorumi.database.AiheDao;
@@ -17,6 +18,10 @@ import tikape.foorumi.domain.Viesti;
 public class Main {
 
     public static void main(String[] args) throws Exception {
+        if (System.getenv("PORT") != null) {
+            port(Integer.valueOf(System.getenv("PORT")));
+        }
+
         Database database = new Database("jdbc:sqlite:foorumi.db");
 //        database.setDebugMode(true);
         database.init();
