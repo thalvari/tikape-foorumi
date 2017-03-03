@@ -40,7 +40,7 @@ public class KetjuDao implements Dao<Ketju, String> {
                         rs.getString("ketjuOtsikko"),
                         rs.getInt("ketjuViestienMaara")),
                 key);
-        if (ketjut == null) {
+        if (ketjut == null || ketjut.isEmpty()) {
             return null;
         } else {
             return ketjut.get(0);

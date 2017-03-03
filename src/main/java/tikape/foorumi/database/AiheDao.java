@@ -34,7 +34,7 @@ public class AiheDao implements Dao<Aihe, String> {
                         rs.getString("aiheNimi"),
                         rs.getInt("aiheViestienMaara")),
                 key);
-        if (aiheet == null) {
+        if (aiheet == null || aiheet.isEmpty()) {
             return null;
         } else {
             return aiheet.get(0);
