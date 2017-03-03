@@ -39,7 +39,7 @@ public class ViestiDao implements Dao<Viesti, String> {
                         rs.getString("viestiNimimerkki"),
                         rs.getString("viestiSisalto")),
                 key);
-        if (viestit == null) {
+        if (viestit == null || viestit.isEmpty()) {
             return null;
         } else {
             return viestit.get(0);
