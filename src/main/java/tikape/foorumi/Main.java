@@ -34,7 +34,7 @@ public class Main {
         KetjuDao ketjuDao = new KetjuDao(database);
         ViestiDao viestiDao = new ViestiDao(database);
 
-        get("/:offset", (req, res) -> {
+        get("/index/:offset", (req, res) -> {
             HashMap map = new HashMap<>();
             List<Aihe> aiheet = aiheDao.findAll(req.params(":offset"));
             map.put("aiheet", aiheet);
@@ -44,8 +44,6 @@ public class Main {
 
         get("/aihe/:id/:offset", (req, res) -> {
             HashMap map = new HashMap<>();
-            System.out.println(req.params(":id"));
-            System.out.println(req.params(":offset"));
             Aihe aihe = aiheDao.findOne(req.params(":id"));
             List<Ketju> ketjut = ketjuDao.findBy(aihe, req.params(":offset"));
             map.put("aihe", aihe);
@@ -68,7 +66,12 @@ public class Main {
         }, new ThymeleafTemplateEngine());
 
         get("/", (req, res) -> {
-            res.redirect("/0");
+            res.redirect("/index/0");
+            return "";
+        });
+
+        get("/index", (req, res) -> {
+            res.redirect("/index/0");
             return "";
         });
 
@@ -87,7 +90,7 @@ public class Main {
             if (!nimi.isEmpty()) {
                 aiheDao.save(new Aihe(nimi));
             }
-            res.redirect("/");
+            res.redirect("/index");
             return "";
         });
 
